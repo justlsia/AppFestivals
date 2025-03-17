@@ -3,21 +3,31 @@ session_start();
 require '../includes/config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les paramètres de la requête
+    // Récupérer les données du formulaire
     $name = $_POST['name'];
     $location = $_POST['location'];
     $date = $_POST['date'];
     $description = $_POST['description'];
     $image = $_POST['image'];
 
-    // Req : Ajouter un nouveaux festival
-    $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$name, $location, $date, $description, $image]);
+    // Vérifier si le festival existe déja (nom/lieu/date)
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM festivals WHERE name = ? AND location = ? AND date = ?");
+    $stmt->execute([$name,$location,$date]);
+    $festivalExists = $stmt->fetchColumn();
 
-    echo "Festival ajouté avec succès !";
-
-    header("Location: manage.php");
+    // Si le festival existe déja 
+    if ($festivalExists > 0) {
+        $_SESSION['error'] = "Ce festival existe déjà ! ⚠️";
+    } else {
+        // Ajouter le festival
+        $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $location, $date, $description, $image]);
+        $_SESSION['success'] = "Festival ajouté avec succès ! ✅";
+        echo "Festival ajouté avec succès !";
+        header("Location: ../pages/manage.php");
     exit();
+    }
+
 }
 ?>
 
@@ -48,7 +58,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <h2 class="mt-5">Ajouter un Festival</h2>
 
-            <!-- Formulaire d'ajout d'un festival -->
+
+            <!-- Messages d'erreur ou de succès A RETIRER ICI --> 
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+            <?php endif; ?>
+
+
+
+            <!-- Formulaire : Ajouter d'un nouveau festival -->
             <form method="post">
 
                 <div class="mb-3">

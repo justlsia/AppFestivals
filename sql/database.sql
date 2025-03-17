@@ -4,9 +4,15 @@ USE festival_db;
 
 -- Table des utilisateurs
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT(11) NOT NULL AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) DEFAULT NULL,
+    name VARCHAR(100) NOT NULL,
+    firstname VARCHAR(100) NOT NULL,
+    age INT(11) DEFAULT NULL,
+    google_id VARCHAR(255) DEFAULT NULL UNIQUE,
+    email VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (id)
 );
 
 -- Table des festivals

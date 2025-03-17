@@ -67,3 +67,73 @@ function initSearch() {
         }
     });
 }
+
+
+
+
+
+
+
+
+/*
+* Ouvrir une popup
+*/ 
+function openPopup() {
+    let modal = document.getElementById("customModal");
+    if (modal) {
+        modal.style.display = "flex";
+    }
+}
+
+/*
+* Fermer une popup
+*/ 
+function closePopup() {
+    let modal = document.getElementById("customModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+
+
+/*
+* Vérifier les entrées utilisateurs à la création d'un compte
+*/
+function validateForm() {
+    let password = document.querySelector("input[name='password']").value;
+    let confirmPassword = document.querySelector("input[name='confirmPassword']").value;
+    let email = document.querySelector("input[name='email']").value;
+    let username = document.querySelector("input[name='username']").value;
+
+    // Vérifier le format de l'email
+    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        alert("Veuillez entrer une adresse e-mail valide.");
+        return false;
+    }
+
+    // Vérifier le format du nom d'utilisateur
+    let usernameRegex = /^[a-zA-Z0-9_]+$/;
+    if (!usernameRegex.test(username)) {
+        alert("Le nom d'utilisateur ne doit contenir que des lettres, chiffres et underscores.");
+        return false;
+    }
+
+    // Vérifier la complexité du mot de passe
+    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+        alert("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+        return false;
+    }
+
+    // Vérifier si les mots de passe correspondent
+    if (password !== confirmPassword) {
+        alert("Les mots de passe ne correspondent pas.");
+        return false;
+    }
+
+    return true;
+}
+

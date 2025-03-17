@@ -1,8 +1,11 @@
 <?php
 session_start();
-$_SESSION = []; // Vide toutes les variables de session
+// Vider toutes les variables de session
+$_SESSION = []; 
 session_destroy();
-setcookie(session_name(), '', time() - 3600, '/'); // Supprime le cookie de session
-header("Location: ../pages/festivals.php");
+// Supprimer le cookie de session
+setcookie(session_name(), '', time() - 3600, '/'); 
+// Rediriger sur la page d'acceuil (liste des festivals)
+header("Location: index.php");
 exit();
 ?>

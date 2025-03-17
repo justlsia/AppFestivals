@@ -40,6 +40,13 @@
                         <a class="nav-link" href="../pages/about.php">A propos</a>
                     </li>
 
+                    <!-- Afficher le lien "Mon profil" uniquement si l'utilisateur est connecté -->
+                    <?php if (isset($_SESSION['user'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/">Mon profil</a>
+                    </li>
+                    <?php endif; ?>
+
                     <!-- Connexion / Déconnexion -->
                     <?php if (isset($_SESSION['user'])): ?>
                     <li class="nav-item">

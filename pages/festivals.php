@@ -3,15 +3,8 @@ session_start();
 require '../includes/config.php';
 require '../includes/header.php';
 
-/*
-// Vérification si l'utilisateur est connecté
-if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
-    exit();
-}
-*/
 
-// Nombre de festivals par page
+// Nombre de festivals affichés par page
 $festivalsParPage = 20;
 
 // Récupérer le numéro de la page actuelle (par défaut : 1)
@@ -39,20 +32,31 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Titre de la page -->
     <title>Festivals</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+
+    <!-- BOOSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </head>
 
 <body>
+
+    <!-- Containeur : Liste des festivals -->
     <div class="container mt-5">
         <div class="card-container">
-            <h2>Liste des Festivals</h2>
+
+            <h2>✨ Découvrez tous les festivals du moment ! 🎶🎭</h2>
+            <p class="text-start">Bienvenue sur notre page dédiée aux festivals en cours et à venir ! Ici, vous trouverez un tableau complet regroupant tous les événements culturels et musicaux à ne pas manquer. Que vous soyez passionné de musique, d’arts, de gastronomie ou de traditions, cette page est votre guide idéal pour explorer les festivités près de chez vous ou ailleurs.</br>
+                Pour en savoir plus sur un festival en particulier, il vous suffit de cliquer sur son nom dans le tableau. Vous serez alors redirigé vers sa fiche détaillée, où vous trouverez des informations précieuses : programme, lieu, dates, description et bien plus encore. Préparez-vous à vivre des moments inoubliables ! 🎉🎶
+            </p>
+            
+            <!-- Table des festivals -->
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -63,6 +67,7 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Boucler sur les festivals -->
                     <?php foreach ($festivals as $festival): ?>
                     <tr onclick="window.location='detail.php?id=<?= $festival['id'] ?>';" style="cursor: pointer;">
                         <td><?= htmlspecialchars($festival['name']) ?></td>
@@ -99,6 +104,7 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
                     </li>
                 </ul>
             </nav>
+
         </div>
     </div>
 </body>
