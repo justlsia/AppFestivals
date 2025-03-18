@@ -77,6 +77,26 @@ function loginUser($username, $password) {
 
 
 
+/**
+ * Récupère les informations de l'utilisateur connecté.
+ */
+function getUserProfile($user_id) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture FROM users WHERE id = ?");
+    $stmt->execute([$user_id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Met à jour le profil de l'utilisateur.
+ */
+function updateUserProfile($user_id, $name, $firstname, $age, $email, $profile_picture) {
+    global $pdo;
+
+    $stmt = $pdo->prepare("UPDATE users SET name = ?, firstname = ?, age = ?, email = ?, profile_picture = ? WHERE id = ?");
+    $stmt->execute([$name, $firstname, $age, $email, $profile_picture, $user_id]);
+
+}
 
 
 

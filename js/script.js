@@ -98,42 +98,28 @@ function closePopup() {
 
 
 
-/*
-* Vérifier les entrées utilisateurs à la création d'un compte
-*/
-function validateForm() {
-    let password = document.querySelector("input[name='password']").value;
-    let confirmPassword = document.querySelector("input[name='confirmPassword']").value;
-    let email = document.querySelector("input[name='email']").value;
-    let username = document.querySelector("input[name='username']").value;
 
-    // Vérifier le format de l'email
-    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-        alert("Veuillez entrer une adresse e-mail valide.");
-        return false;
+
+document.addEventListener("DOMContentLoaded", function () {
+    let editButton = document.getElementById("editButton");
+    let profileInfo = document.getElementById("profileInfo");
+    let editProfileForm = document.getElementById("editProfileForm");
+
+    if (editButton && profileInfo && editProfileForm) {
+        editButton.addEventListener("click", function () {
+            console.log("Bouton Modifier cliqué !"); // Vérifie si le script s'exécute bien
+            profileInfo.style.display = "none";
+            editProfileForm.style.display = "block";
+        });
+    } else {
+        console.error("Un des éléments est introuvable !");
     }
+});
 
-    // Vérifier le format du nom d'utilisateur
-    let usernameRegex = /^[a-zA-Z0-9_]+$/;
-    if (!usernameRegex.test(username)) {
-        alert("Le nom d'utilisateur ne doit contenir que des lettres, chiffres et underscores.");
-        return false;
+
+// Exécuter la fonction seulement si la page contient l'élément spécifique
+document.addEventListener("DOMContentLoaded", function () {
+    if (document.getElementById("editButton")) {
+        initProfilePage();
     }
-
-    // Vérifier la complexité du mot de passe
-    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    if (!passwordRegex.test(password)) {
-        alert("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
-        return false;
-    }
-
-    // Vérifier si les mots de passe correspondent
-    if (password !== confirmPassword) {
-        alert("Les mots de passe ne correspondent pas.");
-        return false;
-    }
-
-    return true;
-}
-
+});

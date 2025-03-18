@@ -121,3 +121,17 @@ footer {
 ul {
     list-style: none; /* Supprime les puces */
 }
+
+
+
+
+
+.rating {
+    font-size: 24px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+}
+.star.filled {
+    color: gold;
+}
