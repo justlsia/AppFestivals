@@ -68,10 +68,13 @@ unset($_SESSION['error'], $_SESSION['success']);
 
 
             <!-- Récupérer son mot de passe -->
-            <a href="" class="btn btn-warning">Mot de passe oublié</a>
+            <a href="../actions/reset_request.php " class="btn btn-warning">Mot de passe oublié</a>
 
             <!-- Créer un compte -->
             <a href="createAccount.php" class="btn btn-success">Créer un compte</a>
+
+            <!-- Retour à l'acceuil (Liste des festivals) -->
+            <a href="festivals.php" class="btn btn-primary">Retour</a>
 
         </div>
 

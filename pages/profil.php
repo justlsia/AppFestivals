@@ -5,7 +5,7 @@ require '../includes/header.php';
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
-    header("Location: ../pages/login.php");
+    header("Location: login.php");
     exit();
 }
 
@@ -188,6 +188,8 @@ $participation_level = isset($user['participation_level']) ? intval($user['parti
             </div>
         </div>
     </div>
+
+    <script src="../js/script.js"></script>
 </body>
 
 </html>
