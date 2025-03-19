@@ -83,3 +83,205 @@ INSERT INTO festivals (name, location, date, description) VALUES
 ('Les Escales', 'Saint-Nazaire, France', '2025-07-26', 'Festival international de musiques actuelles.'),
 ('Jazz in Marciac', 'Marciac, France', '2025-07-29', 'Festival de jazz mondialement reconnu.'),
 ('Festival du Bout du Monde', 'Crozon, France', '2025-08-02', 'Festival de musiques du monde en Bretagne.');
+
+
+
+ALTER TABLE festivals
+ADD COLUMN official_website VARCHAR(255) DEFAULT NULL;
+
+
+UPDATE festivals
+SET official_website = 'https://www.rockenseine.com'
+WHERE name = 'Rock en Seine';
+
+UPDATE festivals
+SET official_website = 'https://www.tomorrowland.com'
+WHERE name = 'Tomorrowland';
+
+UPDATE festivals
+SET official_website = 'https://www.festivaldusoleil.com'
+WHERE name = 'Festival du Soleil';
+
+UPDATE festivals
+SET official_website = 'https://www.electrobeach.com'
+WHERE name = 'Electrobeach Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.hellfest.fr'
+WHERE name = 'Hellfest';
+
+UPDATE festivals
+SET official_website = 'https://www.vieillescharrues.asso.fr'
+WHERE name = 'Les Vieilles Charrues';
+
+UPDATE festivals
+SET official_website = 'https://www.glastonburyfestivals.co.uk'
+WHERE name = 'Glastonbury Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.coachella.com'
+WHERE name = 'Coachella';
+
+UPDATE festivals
+SET official_website = 'https://www.burningman.org'
+WHERE name = 'Burning Man';
+
+UPDATE festivals
+SET official_website = 'https://www.lollapalooza.com'
+WHERE name = 'Lollapalooza';
+
+UPDATE festivals
+SET official_website = 'https://www.szigetfestival.com'
+WHERE name = 'Sziget Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.primaverasound.com'
+WHERE name = 'Primavera Sound';
+
+UPDATE festivals
+SET official_website = 'https://www.roskilde-festival.dk'
+WHERE name = 'Roskilde Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.ultramusicfestival.com'
+WHERE name = 'Ultra Music Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.fujirockfestival.com'
+WHERE name = 'Fuji Rock Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.montreuxjazzfestival.com'
+WHERE name = 'Montreux Jazz Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.madcoolfestival.es'
+WHERE name = 'Mad Cool Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.opener.pl'
+WHERE name = 'Open’er Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.dourfestival.eu'
+WHERE name = 'Dour Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.balatonsound.com'
+WHERE name = 'Balaton Sound';
+
+UPDATE festivals
+SET official_website = 'https://www.exitfest.org'
+WHERE name = 'Exit Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.outlookfestival.com'
+WHERE name = 'Outlook Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.boomfestival.org'
+WHERE name = 'Boom Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.sonarfestival.com'
+WHERE name = 'Sonar Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.dekmantelfestival.com'
+WHERE name = 'Dekmantel Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.mysteryland.nl'
+WHERE name = 'Mysteryland';
+
+UPDATE festivals
+SET official_website = 'https://www.defqon1.nl'
+WHERE name = 'Defqon.1';
+
+UPDATE festivals
+SET official_website = 'https://www.awakenings.com'
+WHERE name = 'Awakenings Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.welovegreen.fr'
+WHERE name = 'We Love Green';
+
+UPDATE festivals
+SET official_website = 'https://www.solidays.org'
+WHERE name = 'Solidays';
+
+UPDATE festivals
+SET official_website = 'https://www.mainsquarefestival.fr'
+WHERE name = 'Main Square Festival';
+
+UPDATE festivals
+SET official_website = 'https://www.jazzavienne.com'
+WHERE name = 'Jazz à Vienne';
+
+UPDATE festivals
+SET official_website = 'https://www.laroutedurock.com'
+WHERE name = 'La Route du Rock';
+
+UPDATE festivals
+SET official_website = 'https://www.calviontherocks.com'
+WHERE name = 'Calvi on the Rocks';
+
+UPDATE festivals
+SET official_website = 'https://www.garorock.com'
+WHERE name = 'Garorock';
+
+UPDATE festivals
+SET official_website = 'https://www.reggaesunska.com'
+WHERE name = 'Reggae Sun Ska';
+
+UPDATE festivals
+SET official_website = 'https://www.festival-interceltique.com'
+WHERE name = 'Festival Interceltique';
+
+UPDATE festivals
+SET official_website = 'https://www.printempsdebourges.com'
+WHERE name = 'Printemps de Bourges';
+
+UPDATE festivals
+SET official_website = 'https://www.eurockeennes.fr'
+WHERE name = 'Eurockéennes';
+
+UPDATE festivals
+SET official_website = 'https://www.festivalnimes.com'
+WHERE name = 'Festival de Nîmes';
+
+UPDATE festivals
+SET official_website = 'https://www.francofolies.fr'
+WHERE name = 'Les Francofolies';
+
+UPDATE festivals
+SET official_website = 'https://www.festival-cannes.com'
+WHERE name = 'Festival de Cannes';
+
+UPDATE festivals
+SET official_website = 'https://www.choregies.fr'
+WHERE name = 'Chorégies d’Orange';
+
+UPDATE festivals
+SET official_website = 'https://www.festival-avignon.com'
+WHERE name = 'Festival d’Avignon';
+
+UPDATE festivals
+SET official_website = 'https://www.nuitssonores.org'
+WHERE name = 'Nuits Sonores';
+
+UPDATE festivals
+SET official_website = 'https://www.festivaldecarcassonne.org'
+WHERE name = 'Festival de Carcassonne';
+
+UPDATE festivals
+SET official_website = 'https://www.lesescalestoulon.com'
+WHERE name = 'Les Escales';
+
+UPDATE festivals
+SET official_website = 'https://www.jazzinmarciac.com'
+WHERE name = 'Jazz in Marciac';
+
+UPDATE festivals
+SET official_website = 'https://www.festivalduboutdumonde.com'
+WHERE name = 'Festival du Bout du Monde';

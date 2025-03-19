@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
     $date = $_POST['date'];
     $description = $_POST['description'];
     $image = $_POST['image'];
+    $official_website = $_POST['official_website'];
 
     // Mise à jour du festival
     if (updateFestival($id, $name, $location, $date, $description, $image)) {
@@ -98,6 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
                     <label class="form-label">URL de l'image</label>
                     <input type="text" name="image" class="form-control"
                         value="<?= htmlspecialchars($festival['image']) ?>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Lien vers le site officiel du festival</label>
+                    <input type="text" name="image" class="form-control"
+                        value="<?= htmlspecialchars($festival['official_website']) ?>" required>
                 </div>
 
                 <!-- Mettre à jour le festival -->

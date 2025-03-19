@@ -58,7 +58,7 @@ if (!$festival) {
             </ul>
 
             <div class="card-body text-center">
-                <a href="https://maps.google.com/?q=<?= urlencode($festival['location']) ?>" class="card-link" target="_blank">Accéder au site officiel</a>
+            <a href="<?= htmlspecialchars($festival['official_website']) ?>" class="card-link" target="_blank">Accéder au site officiel</a>
             </div>
 
             <!-- Retour à l'acceuil (liste des festivals) -->

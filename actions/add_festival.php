@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $_POST['date'];
     $description = $_POST['description'];
     $image = $_POST['image'];
+    $official_website = $_POST['official_website'];
 
     // Vérifier si le festival existe déja (nom/lieu/date)
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM festivals WHERE name = ? AND location = ? AND date = ?");
@@ -20,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['error'] = "Ce festival existe déjà ! ⚠️";
     } else {
         // Ajouter le festival
-        $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$name, $location, $date, $description, $image]);
+        $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $location, $date, $description, $image, $official_website]);
         $_SESSION['success'] = "Festival ajouté avec succès ! ✅";
         echo "Festival ajouté avec succès !";
         header("Location: ../pages/manage.php");
@@ -96,6 +97,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="mb-3">
                     <label class="form-label">URL de l'image :</label>
                     <input type="text" name="image" class="form-control"><br>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">URL du site officiel du festival :</label>
+                    <input type="text" name="official_website" class="form-control" required>
                 </div>
 
                 <!-- Valider l'ajout -->
