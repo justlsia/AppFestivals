@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
     // Mise à jour du festival
     if (updateFestival($id, $name, $location, $date, $description, $image)) {
         echo "Modification du festival avec succès.";
+        $_SESSION['success'] = "Modification du festival avec succès.";
         header("Location: ../pages/manage.php");
         exit();
     } else {

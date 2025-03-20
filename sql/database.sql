@@ -285,3 +285,6 @@ WHERE name = 'Jazz in Marciac';
 UPDATE festivals
 SET official_website = 'https://www.festivalduboutdumonde.com'
 WHERE name = 'Festival du Bout du Monde';
+
+
+ALTER TABLE users ADD COLUMN participation_level INT DEFAULT 3;

@@ -1,7 +1,7 @@
 <?php
 $host = 'localhost';
 $dbname = 'festival_db';
-$username = 'lili'; 
+$username = 'admin'; 
 $password = 'Ipodtutch@12369!'; 
 
 try {

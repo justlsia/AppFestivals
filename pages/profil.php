@@ -12,9 +12,10 @@ if (!isset($_SESSION['user'])) {
 $user_id = $_SESSION['user']['id'];
 
 // Récupérer les informations de l'utilisateur
-$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture FROM users WHERE id = ?");
+$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
 // Traitement du formulaire de mise à jour
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
@@ -24,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $age = trim($_POST["age"]);
     $email = trim($_POST["email"]);
     $profile_picture = $user['profile_picture']; // Conserver l'ancienne photo si non modifiée
+    $participation_level = $user['participation_level'];
 
     if (!empty($_FILES['profile_picture']['name'])) {
         $target_dir = "../uploads/";
@@ -69,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $stmt->execute([$username, $name, $firstname, $age, $email, $profile_picture, $user_id]);
 
     // Recharge les nouvelles données
-    $stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture FROM users WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -80,7 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
 
 
 // Valeur de participation (temporaire)
-$participation_level = isset($user['participation_level']) ? intval($user['participation_level']) : 3;
+//$participation_level = isset($user['participation_level']) ? intval($user['participation_level']) : 3;
+
 
 ?>
 
@@ -131,12 +134,15 @@ $participation_level = isset($user['participation_level']) ? intval($user['parti
                 <p><strong>Âge :</strong> <?= htmlspecialchars($user['age']) ?></p>
                 <p><strong>Email :</strong> <?= htmlspecialchars($user['email']) ?></p>
                 <!-- TEMP -->
-                <p><strong>Niveau de participation :</strong></p>
-                <div class="rating">
-                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                    <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
-                    <?php endfor; ?>
+                <div class="d-flex align-items-center">
+                    <strong>Niveau de participation :</strong>
+                    <div class="rating ms-2">
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
+                        <?php endfor; ?>
+                    </div>
                 </div>
+
 
                 <button class="btn btn-primary" onclick="toggleEdit()">Modifier</button>
             </div>
