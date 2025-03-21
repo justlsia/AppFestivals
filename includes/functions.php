@@ -1,8 +1,11 @@
 <?php
 require 'config.php'; // Connexion à la base de données
 
+
+// ----- FESTIVALS -----
+
 /**
- * Récupère un festival par son ID
+ * Récupèrer un festival par son ID
  */
 function getFestivalById($id) {
     global $pdo;
@@ -13,7 +16,7 @@ function getFestivalById($id) {
 
 
 /**
- * Met à jour un festival
+ * Mettre à jour un festival
  */
 function updateFestival($id, $name, $location, $date, $description, $image) {
     global $pdo;
@@ -21,7 +24,10 @@ function updateFestival($id, $name, $location, $date, $description, $image) {
     return $stmt->execute([$name, $location, $date, $description, $image, $id]);
 }
 
-/*
+
+// ----- USERS -----
+
+/**
 * Ajouter un utilisateur
 */
 function registerUser($name, $firstname, $username, $age, $email, $password) {
@@ -49,9 +55,8 @@ function registerUser($name, $firstname, $username, $age, $email, $password) {
 }
 
 
-
-/*
-* Connexion au site par un utilisateur
+/**
+* Connexion utilisateur
 */
 function loginUser($username, $password) {
     global $pdo;
@@ -74,7 +79,6 @@ function loginUser($username, $password) {
         return "Nom d'utilisateur ou mot de passe incorrect.";
     }
 }
-
 
 
 /**

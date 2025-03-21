@@ -17,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Expiration dans 1 heure
     date_default_timezone_set('Europe/Paris');  
     //$expires = date("Y-m-d H:i:s", strtotime("+1 hour")); 
-    //$expires = date('Y-m-d H:i:s', time() + 3600);
-    $expires = '2025-03-19 15:45:15';
+    $expires = date('Y-m-d H:i:s', time() + 3600);
+    //$expires = '2025-03-19 15:45:15';
     echo $expires; // TEMP
 
     // Vérifier si l'email existe dans la base

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require '../includes/functions.php';
 
@@ -39,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
         Sentry\captureMessage("❌ Error edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    
     }
 }
+    
 ?>
 
 <!DOCTYPE html>

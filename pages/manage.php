@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require '../includes/config.php';
 
 // Vérification si l'utilisateur est connecté
@@ -28,6 +29,7 @@ $festivals = $stmt->fetchAll();
 // Récupérer le nombre total de festivals
 $totalFestivals = $pdo->query("SELECT COUNT(*) FROM festivals")->fetchColumn();
 $totalPages = ceil($totalFestivals / $festivalsParPage);
+
 ?>
 
 <!DOCTYPE html>
