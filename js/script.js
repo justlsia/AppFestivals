@@ -100,26 +100,3 @@ function closePopup() {
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    let editButton = document.getElementById("editButton");
-    let profileInfo = document.getElementById("profileInfo");
-    let editProfileForm = document.getElementById("editProfileForm");
-
-    if (editButton && profileInfo && editProfileForm) {
-        editButton.addEventListener("click", function () {
-            console.log("Bouton Modifier cliqué !"); // Vérifie si le script s'exécute bien
-            profileInfo.style.display = "none";
-            editProfileForm.style.display = "block";
-        });
-    } else {
-        console.error("Un des éléments est introuvable !");
-    }
-});
-
-
-// Exécuter la fonction seulement si la page contient l'élément spécifique
-document.addEventListener("DOMContentLoaded", function () {
-    if (document.getElementById("editButton")) {
-        initProfilePage();
-    }
-});
