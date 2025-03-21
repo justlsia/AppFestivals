@@ -23,10 +23,8 @@ use Google\Service\Oauth2;
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../"); 
 $dotenv->load();
 
-
 header('Content-Type: application/json');
 
-//$google_client_id = "234689107098-9slru6dnpgkrsnl8j0c26qbacec4eavo.apps.googleusercontent.com";
 $google_client_id = $_ENV['GOOGLE_CLIENT_ID'];
 
 if (isset($_POST['credential'])) {
@@ -43,8 +41,8 @@ if (isset($_POST['credential'])) {
         $req = "SELECT * FROM users WHERE google_id = :google_id OR email = :email";
         $stmt = $pdo->prepare($req);
 
-        $stmt->bindParam(':google_id',$google_id);
-        $stmt->bindParam(':email',$email);
+        $stmt->bindParam(':google_id',$google_id, PDO::PARAM_INT);
+        $stmt->bindParam(':email',$email, PDO::PARAM_STR);
 
         $stmt->execute();
         $user = $stmt->fetch();
@@ -55,8 +53,8 @@ if (isset($_POST['credential'])) {
                 $req = "UPDATE users SET google_id = :google_id WHERE email = :email";
                 $stmt = $pdo->prepare($req);
 
-                $stmt->bindParam(':google_id',$google_id);
-                $stmt->bindParam(':email',$email);
+                $stmt->bindParam(':google_id',$google_id, PDO::PARAM_INT);
+                $stmt->bindParam(':email',$email, PDO::PARAM_STR);
 
                 $stmt->execute();
 
@@ -68,9 +66,9 @@ if (isset($_POST['credential'])) {
             $req = "INSERT INTO users (google_id, email, username) VALUES (:google_id, :email, :username)";
             $stmt = $pdo->prepare($req);
 
-            $stmt->bindParam(':google_id',$google_id);
-            $stmt->bindParam(':email',$email);
-            $stmt->bindParam(':username',$name);
+            $stmt->bindParam(':google_id',$google_id, PDO::PARAM_INT);
+            $stmt->bindParam(':email',$email, PDO::PARAM_STR);
+            $stmt->bindParam(':username',$name, PDO::PARAM_STR);
 
 
             $_SESSION['user_id'] = $pdo->lastInsertId();

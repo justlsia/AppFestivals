@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 
 require '../includes/config.php';
 require '../vendor/autoload.php';
+require '../includes/functions.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,29 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //$expires = date("Y-m-d H:i:s", strtotime("+1 hour")); 
     $expires = date('Y-m-d H:i:s', time() + 3600);
     //$expires = '2025-03-19 15:45:15';
-    echo $expires; // TEMP
+    //echo $expires; 
 
     // Vérifier si l'email existe dans la base
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
+    $user = getUserByEmail($email);
 
     if ($user) {
         // Supprimer les anciens tokens pour cet utilisateur
-        $stmt = $pdo->prepare("DELETE FROM password_resets WHERE email = ?");
-        $stmt->execute([$email]);
+        deleteOldTokenGoogle($email);
 
         // Insérer un nouveau token
-        $stmt = $pdo->prepare("INSERT INTO password_resets (email, token, expires) VALUES (?, ?, ?)");
-        $stmt->execute([$email, $token, $expires]);
+        addNewTokenGoogle($email, $token, $expires);
 
         // Envoyer l'email avec le lien
         $reset_link = "http://172.16.201.254/AppSituationExam/situationUn/AppFestivals/pages/reset_password.php?token=$token";
         
         $mail = new PHPMailer(true);
-        //mail($email, "Réinitialisation du mot de passe", "Cliquez ici pour réinitialiser votre mot de passe : $reset_link");
-
-        //echo "Un email de réinitialisation a été envoyé.";
 
         try {
             // Configuration du serveur SMTP

@@ -1,5 +1,6 @@
 <?php
 require '../includes/config.php';
+require '../includes/functions.php';
 
 // Activer le rapport d'erreurs pour voir les erreurs éventuelles
 error_reporting(E_ALL);
@@ -12,10 +13,11 @@ if (isset($_GET['q'])) {
     // Vérifier que la requête n'est pas vide
     if (!empty($query)) {
         try {
-            $stmt = $pdo->prepare("SELECT id, name FROM festivals WHERE name LIKE :query ORDER BY name LIMIT 5");
-            $stmt->bindValue(':query', "%$query%", PDO::PARAM_STR);
-            $stmt->execute();
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            //$stmt = $pdo->prepare("SELECT id, name FROM festivals WHERE name LIKE :query ORDER BY name LIMIT 5");
+            //$stmt->bindValue(':query', "%$query%", PDO::PARAM_STR);
+            //$stmt->execute();
+            //$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $results = searchFestivalByName($query);
 
             // Définir le type de réponse en JSON
             header('Content-Type: application/json');

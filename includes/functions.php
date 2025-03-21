@@ -11,14 +11,20 @@ require 'config.php'; // Connexion BDD
 function getFestivalById($id) {
     global $pdo;
 
-    // Requête : Récupérer un festival selon son id
-    $req = "SELECT * FROM festivals WHERE id = :id";
+    try {
+        // Requête : Récupérer un festival selon son id
+        $req = "SELECT * FROM festivals WHERE id = :id";
 
-    $stmt = $pdo->prepare($req);
-    $stmt->bindParam(':id',$id);
-    $stmt->execute();
+        $stmt = $pdo->prepare($req);
+        $stmt->bindParam(':id',$id, PDO::PARAM_INT);
+        $stmt->execute();
 
-    return $stmt->fetch();
+        return $stmt->fetch();
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la récupération du festival par son id : " . $e->getMessage());
+        return [];
+    }
+
 }
 
 /**
@@ -27,19 +33,28 @@ function getFestivalById($id) {
 function addFestival($name, $location, $date, $description, $image, $official_website) {
     global $pdo;
 
-    // Requête : Ajouter un festival
-    $req = "INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (:name, :location, :date, :description, :official_website, :image)";
-    $stmt = $pdo->prepare($req);
+    try {
+        // Requête : Ajouter un festival
+         $req = "INSERT INTO festivals 
+            (name, location, date, description, image, official_website) 
+            VALUES (:name, :location, :date, :description, :official_website, :image)";
+        $stmt = $pdo->prepare($req);
 
-    // Liaison des paramètres
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':location', $location);
-    $stmt->bindParam(':date', $date);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':official_website', $official_website);
-    $stmt->bindParam(':image', $image);
+        // Liaison des paramètres
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':location', $location, PDO::PARAM_STR);
+        $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+        $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+        $stmt->bindParam(':official_website', $official_website, PDO::PARAM_STR);
+        $stmt->bindParam(':image', $image, PDO::PARAM_STR);
 
-    return $stmt->execute();
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Erreur lors de l'ajout du festival' : " . $e->getMessage());
+        return [];
+    }
+
+    
 
 }
 
@@ -51,23 +66,28 @@ function updateFestival($id, $name, $location, $date, $description, $image, $off
     global $pdo;
 
     // Requête : Mettre à jour un festival existant
-    $req = "UPDATE festivals SET name = :name, location = :location, date = :date, description = :description, image = :image, official_website = :official_website WHERE id = :id";
+    $req = "UPDATE festivals SET 
+        name = :name, location = :location, date = :date, description = :description, image = :image, official_website = :official_website 
+        WHERE id = :id";
 
     $stmt = $pdo->prepare($req);
 
     // Lier les paramètres
-    $stmt->bindParam(':id',$id);
-    $stmt->bindParam(':name',$name);
-    $stmt->bindParam(':location',$location);
-    $stmt->bindParam(':date',$date);
-    $stmt->bindParam(':description',$description);
-    $stmt->bindParam(':image',$image);
-    $stmt->bindParam(':official_website',$official_website);
+    $stmt->bindParam(':id',$id, PDO::PARAM_INT);
+    $stmt->bindParam(':name',$name, PDO::PARAM_STR);
+    $stmt->bindParam(':location',$location, PDO::PARAM_STR);
+    $stmt->bindParam(':date',$date, PDO::PARAM_STR);
+    $stmt->bindParam(':description',$description, PDO::PARAM_STR);
+    $stmt->bindParam(':image',$image, PDO::PARAM_STR);
+    $stmt->bindParam(':official_website',$official_website, PDO::PARAM_STR);
 
     return $stmt->execute();
 }
 
 
+/**
+ * Supprimer un festival selon son id
+ */
 function deleteFestival($id) {
     global $pdo;
 
@@ -76,10 +96,32 @@ function deleteFestival($id) {
     $stmt = $pdo->prepare($req);
 
     // Lier le paramètre
-    $stmt->bindParam(':id',$id);
+    $stmt->bindParam(':id',$id, PDO::PARAM_INT);
 
     return $stmt->execute();
 }
+
+/**
+ * Supprimer un festival selon son id
+ */
+function searchFestivalByName($query) {
+    global $pdo;
+
+    // Requête : Supprimer un festival selon son id
+    $req = "SELECT id, name 
+        FROM festivals 
+        WHERE name LIKE :query 
+        ORDER BY name LIMIT 5";
+
+    $stmt = $pdo->prepare($req);
+
+    // Lier le paramètre
+    $stmt->bindValue(':query', "%$query%", PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 
 // ----- USERS -----
@@ -91,7 +133,9 @@ function registerUser($name, $firstname, $username, $age, $email, $password) {
     global $pdo;
 
     // Vérifier si le nom d'utilisateur ou l'email existe déjà
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+    $stmt = $pdo->prepare("SELECT id 
+        FROM users 
+        WHERE username = ? OR email = ?");
     $stmt->execute([$username, $email]);
 
     if ($stmt->fetch()) {
@@ -102,7 +146,9 @@ function registerUser($name, $firstname, $username, $age, $email, $password) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Insérer l'utilisateur dans la base de données
-    $stmt = $pdo->prepare("INSERT INTO users (name, firstname, username, age, email, password) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO users 
+        (name, firstname, username, age, email, password) 
+        VALUES (?, ?, ?, ?, ?, ?)");
 
     if ($stmt->execute([$name, $firstname, $username, $age, $email, $hashedPassword])) {
         return "Compte créé avec succès !";
@@ -123,9 +169,11 @@ function loginUser($username, $password) {
     }
 
     // Requête : Récupérer les données de connexion d'un utilisateur selon son username
-    $req = "SELECT id, password FROM users WHERE username = :username";
+    $req = "SELECT id, password 
+        FROM users 
+        WHERE username = :username";
     $stmt = $pdo->prepare($req);
-    $stmt->bindParam(':username',$username);
+    $stmt->bindParam(':username',$username, PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -141,7 +189,7 @@ function loginUser($username, $password) {
 
 
 /**
- * Récupère les informations de l'utilisateur connecté.
+ * Récupère un utilisateur selon son id.
  */
 function getUserProfile($user_id) {
     global $pdo;
@@ -152,7 +200,7 @@ function getUserProfile($user_id) {
     $req = "SELECT * FROM users WHERE id = :id";
     $stmt = $pdo->prepare($req);
 
-    $stmt->bindParam(':id',$user_id);
+    $stmt->bindParam(':id',$user_id, PDO::PARAM_int);
 
     $stmt->execute();
 
@@ -162,21 +210,112 @@ function getUserProfile($user_id) {
 /**
  * Mettre à jour le profil un l'utilisateur.
  */
-function updateUserProfile($user_id, $name, $firstname, $age, $email, $profile_picture) {
+function updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture) {
     global $pdo;
 
     // Requête : Mettre à jour un profil utilisateur
-    $req = "UPDATE users SET name = :name, firstname = :firstname, age = :age, email = :email, profile_picture = :profile_picture WHERE id = :id";
+    $req = "UPDATE users SET 
+        username = :username, 
+        name = :name, 
+        firstname = :firstname, 
+        age = :age, 
+        email = :email, 
+        profile_picture = :profile_picture 
+        WHERE id = :id";    
+    
     $stmt = $pdo->prepare($req);
+    
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+    $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+    $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':profile_picture', $profile_picture, PDO::PARAM_STR);
 
-    $stmt->bindParam(':id',$user_id);
-    $stmt->bindParam(':id',$name);
-    $stmt->bindParam(':id',$firstname);
-    $stmt->bindParam(':id',$age);
-    $stmt->bindParam(':id',$email);
-    $stmt->bindParam(':id',$profile_picture);
+    return $stmt->execute();
+
+}
+
+/**
+ * Récupérer un utilisateur selon son username 
+ */
+function getUserByUsername($username) {
+    global $pdo;
+
+    // Requête : Récupérer un utilisateur selon son username
+    $req = "SELECT *
+        FROM users
+        WHERE username = :username";
+
+    $stmt = $pdo->prepare($req);
+    // Lier le paramètre
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
 
     $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+/**
+ * Récupérer un utilisateur selon son email 
+ */
+function getUserByEmail($email) {
+    global $pdo;
+
+    // Requête : Récupérer un utilisateur selon son email
+    $req = "SELECT *
+        FROM users
+        WHERE email = :email";
+
+    $stmt = $pdo->prepare($req);
+    // Lier le paramètre
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+
+
+// ----- GOOGLE AUTENTICATION -----
+
+/**
+* Supprimer l'ancien token de connexion
+*/
+function deleteOldTokenGoogle($email) {
+    global $pdo;
+
+    // Requête : Supprimer l'ancien token de connexion google d'un utilisateur selon son email
+    $req = "DELETE FROM password_resets WHERE email = :email";
+    $stmt = $pdo->prepare($req);
+
+    // Lier le paramètre
+    $stmt->bindParam(':email',$email, PDO::PARAM_STR);
+
+    return $stmt->execute();
+
+}
+
+/**
+* Ajouter un nouveau token de connexion
+*/
+function addNewTokenGoogle($email, $token, $expires) {
+    global $pdo;
+
+    // Requête : Ajouter un nouveau token google à un utilisateur
+    $req = "INSERT INTO password_resets (email, token, expires) VALUES (:email, :token, :expires)";
+    $stmt = $pdo->prepare($req);
+
+    // Lier le paramètre
+    $stmt->bindParam(':email',$email, PDO::PARAM_STR);
+    $stmt->bindParam(':token',$token);
+    $stmt->bindParam(':expires',$expires, PDO::PARAM_STR);
+
+    return $stmt->execute();
 
 }
 

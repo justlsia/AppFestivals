@@ -3,6 +3,7 @@
 session_start();
 require_once "../includes/config.php";
 require '../includes/header.php';
+require_once "../includes/functions.php";
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
@@ -20,6 +21,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Traitement du formulaire de mise à jour
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
+
+    // Récupérer les paramètres du formulaire
     $username = trim($_POST["username"]);
     $name = trim($_POST["name"]);
     $firstname = trim($_POST["firstname"]);
@@ -67,16 +70,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         }
     }
 
+    if (updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture)) {
+        $_SESSION['success'] = "Profil mis à jour avec succès.";
+    } else {
+        $_SESSION['error'] = "Erreur lors de la mise à jour du profil.";
+    }
+
     // Mise à jour des informations dans la BDD
-    $stmt = $pdo->prepare("UPDATE users SET username = ?, name = ?, firstname = ?, age = ?, email = ?, profile_picture = ? WHERE id = ?");
-    $stmt->execute([$username, $name, $firstname, $age, $email, $profile_picture, $user_id]);
+    //$stmt = $pdo->prepare("UPDATE users SET username = ?, name = ?, firstname = ?, age = ?, email = ?, profile_picture = ? WHERE id = ?");
+    //$stmt->execute([$username, $name, $firstname, $age, $email, $profile_picture, $user_id]);
 
     // Recharge les nouvelles données
-    $stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
-    $stmt->execute([$user_id]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    //$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
+    //$stmt->execute([$user_id]);
+    //$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $_SESSION['success'] = "Profil mis à jour avec succès.";
+    //$_SESSION['success'] = "Profil mis à jour avec succès.";
     header("Location: ../pages/profil.php");
     exit();
 }
