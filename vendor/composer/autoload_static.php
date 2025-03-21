@@ -12,6 +12,7 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        'fb4ca2d97fe7ba6af750497425204e70' => __DIR__ . '/..' . '/sentry/sentry/src/functions.php',
         'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
     );
 
@@ -19,6 +20,11 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'p' => 
         array (
             'phpseclib3\\' => 11,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\OptionsResolver\\' => 34,
+            'Sentry\\' => 7,
         ),
         'P' => 
         array (
@@ -32,6 +38,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'M' => 
         array (
             'Monolog\\' => 8,
+        ),
+        'J' => 
+        array (
+            'Jean85\\' => 7,
         ),
         'G' => 
         array (
@@ -52,6 +62,14 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'phpseclib3\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
+        'Sentry\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sentry/sentry/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -81,6 +99,10 @@ class ComposerStaticInit5cd48b6645860e6f71f44390d4549abe
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Jean85\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jean85/pretty-package-versions/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
