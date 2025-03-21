@@ -9,13 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $location = $_POST['location'];
     $date = $_POST['date'];
     $description = $_POST['description'];
-    //$description = $_POST['description'];
+    $official_website = $_POST['official_website'];
 
     // Récupération du fichier image
     $image = file_get_contents($_FILES['image']['tmp_name']); 
 
-    $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$name, $location, $date, $description, $image]);
+    $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$name, $location, $date, $description, $image, $official_website]);
 
     echo "Festival ajouté avec succès !";
 
@@ -59,14 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control"></textarea>
+                    <textarea name="description" class="form-control" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">URL de l'image :</label>
                     <input type="text" name="image" class="form-control"><br>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">URL du site officiel :</label>
+                    <input type="text" name="official_website" class="form-control" required><br>
+                </div>
 
-                <!-- Valider l'ajout -->
+                <!-- Valider l'ajout du festival -->
                 <button type="submit" class="btn btn-success">Ajouter</button>
 
                 <a href="../pages/manage.php" class="btn btn-primary">Annuler</a>

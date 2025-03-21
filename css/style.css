@@ -1,3 +1,7 @@
+/*
+*   Style commun à toutes les pages
+*/
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
@@ -46,16 +50,13 @@ h2 {
 
 
 
-
-
-
 footer {
     margin-top: 40px;
 }
 
 
 
-/* ---- Effet carte floue ---- */
+/* ---- Effet carte flou ---- */
 .card-container {
     background: rgba(255, 255, 255, 0.2); /* Fond semi-transparent */
     backdrop-filter: blur(5px); /* Effet de flou */
@@ -142,3 +143,4 @@ ul {
 .star.filled {
     color: gold;
 }
+
