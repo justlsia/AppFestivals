@@ -292,3 +292,6 @@ ALTER TABLE users ADD COLUMN participation_level INT DEFAULT 3;
 ALTER TABLE users ADD COLUMN profile_picture  VARCHAR(255) DEFAULT "../uploads/default_avatar.svg";
 
 
+CREATE USER 'userFestival'@'localhost' IDENTIFIED BY '4S6aF4lzBo7Nu3S9nsmM';
+
+GRANT ALL PRIVILEGES ON festival_db.* TO 'userFestival'@'localhost';

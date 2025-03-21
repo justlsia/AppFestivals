@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($message === "Compte créé avec succès !") {
         $_SESSION['success'] = $message;
         $_SESSION['username'] = $name;
+        Sentry\captureMessage("✅ Add new user. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . "Name festival : " . $name ); // Log    
+
         header("Location: ../pages/festivals.php");
         
     } else {

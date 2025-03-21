@@ -19,10 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "username" => $user['username']
         ];
         $_SESSION['success'] = "Connexion réussie !";
+        Sentry\captureMessage("✅ Session start. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username); // Log
         header("Location: ../pages/festivals.php"); // Redirection après connexion
         exit;
     } else {
         $_SESSION['error'] = "Nom d'utilisateur ou mot de passe incorrect.";
+        Sentry\captureMessage("❌ Session error. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . ", password : " . $password); // Log
         header("Location: ../pages/login.php");
         exit;
     }

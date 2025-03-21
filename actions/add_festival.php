@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$name, $location, $date, $description, $image, $official_website]);
 
+    Sentry\captureMessage("✅ Add new Festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . "Name festival : " . $name ); // Log    
     echo "Festival ajouté avec succès !";
 
     header("Location: manage.php");

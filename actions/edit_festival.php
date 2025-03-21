@@ -31,10 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
     if (updateFestival($id, $name, $location, $date, $description, $image)) {
         echo "Modification du festival avec succès.";
         $_SESSION['success'] = "Modification du festival avec succès.";
+        Sentry\captureMessage("✅ Edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    
         header("Location: ../pages/manage.php");
         exit();
     } else {
         $error = "Erreur lors de la mise à jour du festival.";
+        Sentry\captureMessage("❌ Error edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    
     }
 }
 ?>
