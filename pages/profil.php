@@ -81,10 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
 }
 
 
-// Valeur de participation (temporaire)
-//$participation_level = isset($user['participation_level']) ? intval($user['participation_level']) : 3;
-
-
 ?>
 
 <!DOCTYPE html>
@@ -138,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <strong>Niveau de participation :</strong>
                     <div class="rating ms-2">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
+                        <span class="star <?= ($i <= $user['participation_level']) ? 'filled' : ''; ?>">★</span>
                         <?php endfor; ?>
                     </div>
                 </div>
