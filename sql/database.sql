@@ -288,3 +288,7 @@ WHERE name = 'Festival du Bout du Monde';
 
 
 ALTER TABLE users ADD COLUMN participation_level INT DEFAULT 3;
+
+ALTER TABLE users ADD COLUMN profile_picture  VARCHAR(255) DEFAULT "../uploads/default_avatar.svg";
+
+

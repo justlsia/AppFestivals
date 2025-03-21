@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once "../includes/config.php";
 require '../includes/header.php';
@@ -11,11 +12,11 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['id'];
 
+
 // Récupérer les informations de l'utilisateur
 $stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
 
 // Traitement du formulaire de mise à jour
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
