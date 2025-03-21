@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : "";
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : "";
 unset($_SESSION['error'], $_SESSION['success']);

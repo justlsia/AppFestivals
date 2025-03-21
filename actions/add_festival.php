@@ -13,18 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $image = $_POST['image'];
 
     
-
     $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([$name, $location, $date, $description, $image, $official_website]);
 
     //Sentry\captureMessage("✅ Add new Festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . "Name festival : " . $name ); // Log    
     echo "Festival ajouté avec succès !";
-
+    $_SESSION['success'] = "Festival ajouté avec succès ! ✅";
     header("Location: ../pages/manage.php");
-    echo "Festival ajouté avec succès !";
-    $_SESSION['sucess'] = "Festival ajouté avec succès ! ✅";
     exit();
-}
+} 
+
 ?>
 
 <!DOCTYPE html>
