@@ -12,12 +12,14 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['id'];
-
+var_dump($user_id);
 
 // Récupérer les informations de l'utilisateur
-$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+//$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
+//$stmt->execute([$user_id]);
+//$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$user = getUserProfile($user_id);
 
 // Traitement du formulaire de mise à jour
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
@@ -76,16 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         $_SESSION['error'] = "Erreur lors de la mise à jour du profil.";
     }
 
-    // Mise à jour des informations dans la BDD
-    //$stmt = $pdo->prepare("UPDATE users SET username = ?, name = ?, firstname = ?, age = ?, email = ?, profile_picture = ? WHERE id = ?");
-    //$stmt->execute([$username, $name, $firstname, $age, $email, $profile_picture, $user_id]);
-
-    // Recharge les nouvelles données
-    //$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
-    //$stmt->execute([$user_id]);
-    //$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    //$_SESSION['success'] = "Profil mis à jour avec succès.";
     header("Location: ../pages/profil.php");
     exit();
 }
@@ -132,6 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <img src="<?= $user['profile_picture'] ?>" alt="Photo de profil" width="100" class="mb-2">
                     <?php else: ?>
                     <span>Pas de photo</span>
+                    <img src="../uploads/default_avanar.svg" alt="Photo de profil" width="100" class="mb-2"
                     <?php endif; ?>
                 </p>
                 <p><strong>Nom d'utilisateur :</strong> <?= htmlspecialchars($user['username']) ?></p>

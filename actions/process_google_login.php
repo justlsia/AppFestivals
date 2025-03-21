@@ -10,6 +10,7 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 require '../includes/config.php'; 
+require '../includes/functions.php'; 
 require '../vendor/autoload.php';
 
 use Dotenv\Dotenv;
@@ -33,53 +34,48 @@ if (isset($_POST['credential'])) {
     $payload = $client->verifyIdToken($token);
 
     if ($payload) {
+
         $google_id = $payload['sub'];
         $email = $payload['email'];
+        $username = $payload['name'];
         $name = $payload['name'];
+        $firstname = $payload['name'];
 
-        // Requête : Rechercher un utilisateur par sin google_id ou son email
-        $req = "SELECT * FROM users WHERE google_id = :google_id OR email = :email";
-        $stmt = $pdo->prepare($req);
-
-        $stmt->bindParam(':google_id',$google_id, PDO::PARAM_INT);
-        $stmt->bindParam(':email',$email, PDO::PARAM_STR);
-
-        $stmt->execute();
-        $user = $stmt->fetch();
+        // Requête : Rechercher un utilisateur par son google_id ou son email
+        $user = getUserByEmailOrGoogleId($email, $google_id);
 
         if ($user) {
             if (empty($user['google_id'])) {
-                // Requête : Mettre à jour un google_id selon un email
-                $req = "UPDATE users SET google_id = :google_id WHERE email = :email";
-                $stmt = $pdo->prepare($req);
-
-                $stmt->bindParam(':google_id',$google_id, PDO::PARAM_INT);
-                $stmt->bindParam(':email',$email, PDO::PARAM_STR);
-
-                $stmt->execute();
-
+                // Associe l'ID Google à l'utilisateur existant
+                UpdateGoogleIdByEmail($google_id, $email);
             }
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
+        
+            // 🟢 Stocke correctement les infos utilisateur en session
+            $_SESSION['user'] = [
+                "id" => $user['id'],
+                "username" => $user['username'],
+                "email" => $user['email'],
+                "firstname" => $user['firstname'],
+                "name" => $user['name']
+            ];
         } else {
-            // Requête : Ajouter un utilisateur 
-            $req = "INSERT INTO users (google_id, email, username) VALUES (:google_id, :email, :username)";
-            $stmt = $pdo->prepare($req);
-
-            $stmt->bindParam(':google_id',$google_id, PDO::PARAM_INT);
-            $stmt->bindParam(':email',$email, PDO::PARAM_STR);
-            $stmt->bindParam(':username',$name, PDO::PARAM_STR);
-
-
-            $_SESSION['user_id'] = $pdo->lastInsertId();
-            $_SESSION['username'] = $name;
-
+            // 🔴 Créer un utilisateur Google
+            addUserByGoogleAuth($google_id, $email, $username, $name, $firstname);
+        
+            // 🔄 Récupérer le nouvel ID
+            $newUserId = $pdo->lastInsertId();
+        
+            // 🟢 Stocke correctement les infos en session
+            $_SESSION['user'] = [
+                "id" => $newUserId,
+                "username" => $name,
+                "email" => $email,
+                "firstname" => $firstname,
+                "name" => $name
+            ];
         }
-
-        // Ajoute l'email en session
-        $_SESSION['user'] = true; // Indique que l'utilisateur est connecté (afficher Gérer dans le header)
-        $_SESSION['user_email'] = $email;
-
+        
+        // Retourne la réponse JSON
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => "Token invalide"]);
