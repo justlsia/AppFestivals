@@ -1,21 +1,40 @@
 <?php
 
-$host = 'localhost';
-$dbname = 'festival_db';
-$username = 'userFestival'; 
-$password = '4S6aF4lzBo7Nu3S9nsmM'; 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Serveur de logs GlitchTip
 require '../vendor/autoload.php';
-Sentry\init(['dsn' => 'http://c1885b9abaac4e638e180b3d456dea08@172.16.0.100:8000/2' ]);
+
+use Dotenv\Dotenv;
+use PDO;
+use PDOException;
+use Sentry;
+
+// Charger les variables d'environnement
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../"); 
+$dotenv->load();
+
+// Vérifier que les variables d'environnement sont bien chargées
+$env_vars = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS'];
+foreach ($env_vars as $var) {
+    if (!isset($_ENV[$var]) || empty($_ENV[$var])) {
+        die("⚠️ Erreur : La variable d'environnement $var est manquante dans .env");
+    }
+}
+
+// Initialisation de Sentry avec DSN sécurisé
+Sentry\init(['dsn' => $_ENV['SENTRY_DSN']]);
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo = new PDO(
+        "mysql:host=" . $_ENV['DB_HOST'] . ";dbname=" . $_ENV['DB_NAME'] . ";charset=utf8", $_ENV['DB_USER'], $_ENV['DB_PASS']);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    Sentry\captureMessage("✅ Connexion BDD sucess. Date/Time : " . date("F j, Y, g:i a"));
+    
+    Sentry\captureMessage("✅ Connexion BDD réussie. Date/Time : " . date("F j, Y, g:i a"));
 } catch (PDOException $e) {
+    Sentry\captureMessage("❌ Connexion BDD échouée : " . $e->getMessage());
     die("Erreur de connexion : " . $e->getMessage());
-    Sentry\captureMessage("❌ Connexion BDD error. Date/Time : " . date("F j, Y, g:i a"));
 }
 
 ?>

@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
     $official_website = $_POST['official_website'];
 
     // Mise à jour du festival
-    if (updateFestival($id, $name, $location, $date, $description, $image)) {
+    if (updateFestival($id, $name, $location, $date, $description, $image, $official_website)) {
         echo "Modification du festival avec succès.";
         $_SESSION['success'] = "Modification du festival avec succès.";
         Sentry\captureMessage("✅ Edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    

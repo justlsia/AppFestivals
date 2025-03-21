@@ -1,5 +1,6 @@
 <?php
-require 'config.php'; // Connexion à la base de données
+
+require 'config.php'; // Connexion BDD
 
 
 // ----- FESTIVALS -----
@@ -9,19 +10,75 @@ require 'config.php'; // Connexion à la base de données
  */
 function getFestivalById($id) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM festivals WHERE id = ?");
-    $stmt->execute([$id]);
+
+    // Requête : Récupérer un festival selon son id
+    $req = "SELECT * FROM festivals WHERE id = :id";
+
+    $stmt = $pdo->prepare($req);
+    $stmt->bindParam(':id',$id);
+    $stmt->execute();
+
     return $stmt->fetch();
+}
+
+/**
+ * Ajouter un festival
+ */
+function addFestival($name, $location, $date, $description, $image, $official_website) {
+    global $pdo;
+
+    // Requête : Ajouter un festival
+    $req = "INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (:name, :location, :date, :description, :official_website, :image)";
+    $stmt = $pdo->prepare($req);
+
+    // Liaison des paramètres
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':location', $location);
+    $stmt->bindParam(':date', $date);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':official_website', $official_website);
+    $stmt->bindParam(':image', $image);
+
+    return $stmt->execute();
+
 }
 
 
 /**
  * Mettre à jour un festival
  */
-function updateFestival($id, $name, $location, $date, $description, $image) {
+function updateFestival($id, $name, $location, $date, $description, $image, $official_website) {
     global $pdo;
-    $stmt = $pdo->prepare("UPDATE festivals SET name = ?, location = ?, date = ?, description = ?, image = ? WHERE id = ?");
-    return $stmt->execute([$name, $location, $date, $description, $image, $id]);
+
+    // Requête : Mettre à jour un festival existant
+    $req = "UPDATE festivals SET name = :name, location = :location, date = :date, description = :description, image = :image, official_website = :official_website WHERE id = :id";
+
+    $stmt = $pdo->prepare($req);
+
+    // Lier les paramètres
+    $stmt->bindParam(':id',$id);
+    $stmt->bindParam(':name',$name);
+    $stmt->bindParam(':location',$location);
+    $stmt->bindParam(':date',$date);
+    $stmt->bindParam(':description',$description);
+    $stmt->bindParam(':image',$image);
+    $stmt->bindParam(':official_website',$official_website);
+
+    return $stmt->execute();
+}
+
+
+function deleteFestival($id) {
+    global $pdo;
+
+    // Requête : Supprimer un festival selon son id
+    $req = "DELETE FROM festivals WHERE id = :id";
+    $stmt = $pdo->prepare($req);
+
+    // Lier le paramètre
+    $stmt->bindParam(':id',$id);
+
+    return $stmt->execute();
 }
 
 
@@ -65,9 +122,11 @@ function loginUser($username, $password) {
         return "Veuillez remplir tous les champs.";
     }
 
-    // Récupérer l'utilisateur depuis la BDD
-    $stmt = $pdo->prepare("SELECT id, password FROM users WHERE username = ?");
-    $stmt->execute([$username]);
+    // Requête : Récupérer les données de connexion d'un utilisateur selon son username
+    $req = "SELECT id, password FROM users WHERE username = :username";
+    $stmt = $pdo->prepare($req);
+    $stmt->bindParam(':username',$username);
+    $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Vérifier si l'utilisateur existe et si le mot de passe est correct
@@ -86,19 +145,38 @@ function loginUser($username, $password) {
  */
 function getUserProfile($user_id) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture FROM users WHERE id = ?");
-    $stmt->execute([$user_id]);
+    //$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture FROM users WHERE id = ?");
+    //$stmt->execute([$user_id]);
+
+    // Requête : Récupérer un utilisateur selon son id
+    $req = "SELECT * FROM users WHERE id = :id";
+    $stmt = $pdo->prepare($req);
+
+    $stmt->bindParam(':id',$user_id);
+
+    $stmt->execute();
+
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
- * Met à jour le profil de l'utilisateur.
+ * Mettre à jour le profil un l'utilisateur.
  */
 function updateUserProfile($user_id, $name, $firstname, $age, $email, $profile_picture) {
     global $pdo;
 
-    $stmt = $pdo->prepare("UPDATE users SET name = ?, firstname = ?, age = ?, email = ?, profile_picture = ? WHERE id = ?");
-    $stmt->execute([$name, $firstname, $age, $email, $profile_picture, $user_id]);
+    // Requête : Mettre à jour un profil utilisateur
+    $req = "UPDATE users SET name = :name, firstname = :firstname, age = :age, email = :email, profile_picture = :profile_picture WHERE id = :id";
+    $stmt = $pdo->prepare($req);
+
+    $stmt->bindParam(':id',$user_id);
+    $stmt->bindParam(':id',$name);
+    $stmt->bindParam(':id',$firstname);
+    $stmt->bindParam(':id',$age);
+    $stmt->bindParam(':id',$email);
+    $stmt->bindParam(':id',$profile_picture);
+
+    $stmt->execute();
 
 }
 

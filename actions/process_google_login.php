@@ -1,17 +1,33 @@
 <?php
 session_start();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 require '../includes/config.php'; 
 require '../vendor/autoload.php';
 
+use Dotenv\Dotenv;
+use PDO;
+use PDOException;
 use Google\Client as Google_Client;
 use Google\Service\Oauth2;
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+
+// Charger les variables d'environnement
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../"); 
+$dotenv->load();
+
 
 header('Content-Type: application/json');
 
-$google_client_id = "234689107098-9slru6dnpgkrsnl8j0c26qbacec4eavo.apps.googleusercontent.com";
+//$google_client_id = "234689107098-9slru6dnpgkrsnl8j0c26qbacec4eavo.apps.googleusercontent.com";
+$google_client_id = $_ENV['GOOGLE_CLIENT_ID'];
 
 if (isset($_POST['credential'])) {
     $token = $_POST['credential'];
@@ -23,22 +39,40 @@ if (isset($_POST['credential'])) {
         $email = $payload['email'];
         $name = $payload['name'];
 
-        // Vérifie si l'utilisateur existe déjà
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE google_id = ? OR email = ?");
-        $stmt->execute([$google_id, $email]);
+        // Requête : Rechercher un utilisateur par sin google_id ou son email
+        $req = "SELECT * FROM users WHERE google_id = :google_id OR email = :email";
+        $stmt = $pdo->prepare($req);
+
+        $stmt->bindParam(':google_id',$google_id);
+        $stmt->bindParam(':email',$email);
+
+        $stmt->execute();
         $user = $stmt->fetch();
 
         if ($user) {
             if (empty($user['google_id'])) {
-                $stmt = $pdo->prepare("UPDATE users SET google_id = ? WHERE email = ?");
-                $stmt->execute([$google_id, $email]);
+                // Requête : Mettre à jour un google_id selon un email
+                $req = "UPDATE users SET google_id = :google_id WHERE email = :email";
+                $stmt = $pdo->prepare($req);
+
+                $stmt->bindParam(':google_id',$google_id);
+                $stmt->bindParam(':email',$email);
+
+                $stmt->execute();
+
             }
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
         } else {
-            // Ajoute un nouvel utilisateur
-            $stmt = $pdo->prepare("INSERT INTO users (google_id, email, username) VALUES (?, ?, ?)");
-            $stmt->execute([$google_id, $email, $name]);
+            // Requête : Ajouter un utilisateur 
+            $req = "INSERT INTO users (google_id, email, username) VALUES (:google_id, :email, :username)";
+            $stmt = $pdo->prepare($req);
+
+            $stmt->bindParam(':google_id',$google_id);
+            $stmt->bindParam(':email',$email);
+            $stmt->bindParam(':username',$name);
+
+
             $_SESSION['user_id'] = $pdo->lastInsertId();
             $_SESSION['username'] = $name;
 

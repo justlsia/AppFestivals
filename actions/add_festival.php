@@ -1,10 +1,14 @@
 <?php
 
 session_start();
+
 require '../includes/config.php';
+require '../includes/functions.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Récupérer les paramètres de la requête
     $name = $_POST['name'];
     $location = $_POST['location'];
     $date = $_POST['date'];
@@ -12,16 +16,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $official_website = $_POST['official_website'];
     $image = $_POST['image'];
 
-    
-    $stmt = $pdo->prepare("INSERT INTO festivals (name, location, date, description, image, official_website) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$name, $location, $date, $description, $image, $official_website]);
+    try {
 
-    //Sentry\captureMessage("✅ Add new Festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . "Name festival : " . $name ); // Log    
-    echo "Festival ajouté avec succès !";
-    $_SESSION['success'] = "Festival ajouté avec succès ! ✅";
-    header("Location: ../pages/manage.php");
-    exit();
-} 
+        // Ajouter un festival
+        if (addFestival($name, $location, $date, $description, $image, $official_website)) {
+            $_SESSION['success'] = "Festival ajouté avec succès ! ✅";
+            header("Location: ../pages/manage.php");
+        } 
+
+    } catch (PDOException $e) {
+
+        echo "Erreur lors de l'ajout du festival : " . $e->getMessage();
+    }
+
+}
+
+
+// TEST
 
 ?>
 

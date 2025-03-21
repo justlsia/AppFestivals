@@ -3,6 +3,8 @@ session_start();
 require_once "../includes/functions.php"; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Récupérer les paramètres de la requête
     $name = htmlspecialchars(trim($_POST["name"]));
     $firstname = htmlspecialchars(trim($_POST["firstname"]));
     $username = htmlspecialchars(trim($_POST["username"]));
@@ -25,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    
     // Enregistrer l'utilisateur
     $message = registerUser($name, $firstname, $username, $age, $email, $password);
 
