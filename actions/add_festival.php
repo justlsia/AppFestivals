@@ -2,8 +2,33 @@
 
 session_start();
 
+
 require '../includes/config.php';
 require '../includes/functions.php';
+
+//var_dump($_SESSION); // Affiche tout le contenu de la session
+
+// Vérification si l'utilisateur est connecté
+if (empty($_SESSION['user'])) {
+    die("❌ Erreur : Aucun utilisateur connecté.");
+}
+
+$username = $_SESSION['user']['username'];
+//var_dump($username); // Vérifie la valeur du username
+
+$user = getUserByUsername($username);
+//var_dump($user); // Vérifie ce que retourne la fonction
+
+if (!$user) {
+    die("❌ Erreur : Utilisateur non trouvé en base.");
+}
+
+if (!empty($user['id'])) {
+    $user_id = $user['id'];
+} else {
+    die("❌ Erreur : Impossible de récupérer l'ID utilisateur.");
+}
+
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -14,15 +39,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $_POST['date'];
     $description = $_POST['description'];
     $official_website = $_POST['official_website'];
-    $image = $_POST['image'];
+    $image = $_POST['image'];   
 
     try {
 
-        // Ajouter un festival
-        if (addFestival($name, $location, $date, $description, $image, $official_website)) {
+        // Ajouter un festival et récupérer son ID
+        $festival_id = addFestival($name, $location, $date, $description, $image, $official_website);
+
+        if ($festival_id) {
+            // Vérifier le niveau de participation de l'utilisateur
+            $totalPoints = getParticipationUserById($user_id);
+
+            if ($totalPoints < 5) {
+                // Ajouter un point
+                $sucess = addParticipationLevel($user_id, $festival_id); 
+                if ($success) {
+                    echo "✅ Participation ajoutée avec succès !";
+                } else {
+                    echo "❌ Erreur lors de l'ajout de la participation.";
+                }
+            }
+
             $_SESSION['success'] = "Festival ajouté avec succès ! ✅";
             header("Location: ../pages/manage.php");
-        } 
+            exit();
+        } else {
+            $_SESSION['error'] = "Erreur lors de l'ajout du festival.";
+            header("Location: ../pages/manage.php");
+            exit();
+        }
+
 
     } catch (PDOException $e) {
 
@@ -31,8 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
-
-// TEST
 
 ?>
 

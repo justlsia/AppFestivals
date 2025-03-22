@@ -36,7 +36,7 @@ function addFestival($name, $location, $date, $description, $image, $official_we
         // Requête : Ajouter un festival
          $req = "INSERT INTO festivals 
             (name, location, date, description, image, official_website) 
-            VALUES (:name, :location, :date, :description, :official_website, :image)";
+            VALUES (:name, :location, :date, :description, :image, :official_website)";
         $stmt = $pdo->prepare($req);
 
         // Liaison des paramètres
@@ -44,10 +44,13 @@ function addFestival($name, $location, $date, $description, $image, $official_we
         $stmt->bindParam(':location', $location, PDO::PARAM_STR);
         $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         $stmt->bindParam(':description', $description, PDO::PARAM_STR);
-        $stmt->bindParam(':official_website', $official_website, PDO::PARAM_STR);
         $stmt->bindParam(':image', $image, PDO::PARAM_STR);
+        $stmt->bindParam(':official_website', $official_website, PDO::PARAM_STR);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return $pdo->lastInsertId(); // Retourner l'ID du festival inséré
+        }
+        return false;
     } catch (PDOException $e) {
         error_log("Erreur lors de l'ajout du festival' : " . $e->getMessage());
         return [];
@@ -431,6 +434,68 @@ function addNewTokenGoogle($email, $token, $expires) {
         return [];
     } 
 }
+
+
+
+
+// ----- PARTICIPATION LEVEL -----
+
+/**
+* Ajouter un point de participation
+*/
+function addParticipationLevel($user_id, $festival_id){
+    global $pdo;
+    try {
+        // Requête : Ajouter un point de participation (incrémentation si utilisateur déja renseigné)
+        $req = "INSERT INTO participations (user_id, festival_id, points) 
+            VALUES (:user_id, :festival_id, 1)
+            ON DUPLICATE KEY UPDATE points = points + 1";
+
+        $stmt = $pdo->prepare($req);
+
+        // Lier les paramètres
+        $stmt->bindParam(':user_id',$user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':festival_id',$festival_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Erreur lors de l'ajout du point de participation'' : " . $e->getMessage());
+    return [];
+    } 
+}
+
+
+/**
+* Récupérer le total des points de participation d'un utilisateur
+*/
+function getParticipationUserById($user_id){
+    global $pdo;
+    try {
+        // Requête : Vérifier le nombre total de points de l'utilisateur
+        $req = "SELECT SUM(points)
+            AS total_points 
+            FROM participations 
+            WHERE user_id = :user_id";
+
+        $stmt = $pdo->prepare($req);
+
+        // Lier le paramètre
+        $stmt->bindParam(':user_id',$user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $totalPoints = $result['total_points'];
+
+        return $totalPoints;
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la récupération des points de l'utilisateur'' : " . $e->getMessage());
+        return 0;
+    } 
+
+}
+
+
 
 
 

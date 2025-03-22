@@ -16,6 +16,9 @@ $user_id = $_SESSION['user']['id'];
 // Récupérer les informations de l'utilisateur
 $user = getUserProfile($user_id);
 
+// Récupérer les points de participations de l'utilisateur
+$participation_level = getParticipationUserById($user_id);
+
 // Traitement du formulaire de mise à jour
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
 
@@ -26,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $age = trim($_POST["age"]);
     $email = trim($_POST["email"]);
     $profile_picture = $user['profile_picture']; // Conserver l'ancienne photo si non modifiée
-    $participation_level = $user['participation_level'];
+    //$participation_level = $user['participation_level'];
 
     if (!empty($_FILES['profile_picture']['name'])) {
         $target_dir = "../uploads/";
@@ -132,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <strong>Niveau de participation :</strong>
                     <div class="rating ms-2">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <span class="star <?= ($i <= $user['participation_level']) ? 'filled' : ''; ?>">★</span>
+                        <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
                         <?php endfor; ?>
                     </div>
                 </div>
