@@ -12,13 +12,8 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user_id = $_SESSION['user']['id'];
-var_dump($user_id);
 
 // Récupérer les informations de l'utilisateur
-//$stmt = $pdo->prepare("SELECT username, name, firstname, age, email, profile_picture, participation_level FROM users WHERE id = ?");
-//$stmt->execute([$user_id]);
-//$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
 $user = getUserProfile($user_id);
 
 // Traitement du formulaire de mise à jour

@@ -295,3 +295,16 @@ ALTER TABLE users ADD COLUMN profile_picture  VARCHAR(255) DEFAULT "../uploads/d
 CREATE USER 'userFestival'@'localhost' IDENTIFIED BY '4S6aF4lzBo7Nu3S9nsmM';
 
 GRANT ALL PRIVILEGES ON festival_db.* TO 'userFestival'@'localhost';
+
+
+
+
+CREATE TABLE participations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id BYTE NOT NULL,
+    festival_id BYTE NOT NULL,
+    points TINYINT NOT NULL CHECK (points BETWEEN 1 AND 5),
+    participation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (festival_id) REFERENCES festivals(id) ON DELETE CASCADE
+);
