@@ -76,7 +76,7 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
                 <div class="custom-modal-content">
 
                 <h5 class="modal-title">🛠️ Administration des Festivals : Ajout, Modification et Suppression</h5>
-
+                    <hr>
                     <div class="modal-body">
                         <h4>✍ Ajouter un Festival</h4>
                         <p>Vous avez connaissance d’un festival qui ne figure pas encore sur le site ? Vous pouvez
@@ -103,6 +103,7 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
                         <h4>🤝 Un Site Basé sur la Confiance et la Collaboration</h4>
                         <p>En tant que contributeur, vous jouez un rôle clé dans la qualité et la fiabilité du site.</p>
 
+                        <hr>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" onclick="closePopup()">Fermer</button>
                         </div>

@@ -56,7 +56,6 @@ unset($_SESSION['error'], $_SESSION['success']);
 
             <!-- Connexion Google Auth  -->
             <hr>
-            <!-- Connexion Google Auth -->
             <div class="d-flex justify-content-center">
                 <div id="g_id_onload"
                     data-client_id="234689107098-9slru6dnpgkrsnl8j0c26qbacec4eavo.apps.googleusercontent.com" data-callback="handleCredentialResponse" data-auto_prompt="false">

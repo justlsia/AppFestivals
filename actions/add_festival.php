@@ -6,8 +6,6 @@ session_start();
 require '../includes/config.php';
 require '../includes/functions.php';
 
-//var_dump($_SESSION); // Affiche tout le contenu de la session
-
 // Vérification si l'utilisateur est connecté
 if (empty($_SESSION['user'])) {
     die("❌ Erreur : Aucun utilisateur connecté.");

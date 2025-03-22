@@ -123,8 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <?php else: ?>
                     <span>Pas de photo</span>
                     <img src="../uploads/default_avanar.svg" alt="Photo de profil" width="100" class="mb-2"
-                    <?php endif; ?>
-                </p>
+                        <?php endif; ?> </p>
                 <p><strong>Nom d'utilisateur :</strong> <?= htmlspecialchars($user['username']) ?></p>
                 <p><strong>Nom :</strong> <?= htmlspecialchars($user['name']) ?></p>
                 <p><strong>Prénom :</strong> <?= htmlspecialchars($user['firstname']) ?></p>
@@ -137,6 +136,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                         <?php for ($i = 1; $i <= 5; $i++): ?>
                         <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
                         <?php endfor; ?>
+                    </div>
+                    <!-- 🔥 Bouton "?" pour afficher les infos -->
+                    <button type="button" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#infoModal">?</button>
+                </div>
+
+                <!-- 📌 Modal (POPUP) d'information -->
+                <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title " id="infoModalLabel">Niveau de Participation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>⭐ Le niveau de participation évolue dynamiquement en fonction de votre engagement dans l'organisation et la gestion des festivals.<br></p>
+                                <p>➜  Ajout d'un festival : Chaque fois que vous ajoutez un nouveau festival, votre niveau de participation est mis à jour pour refléter votre contribution.<br></p>
+                                <p>➜ Modification d'un festival : Toute mise à jour d’un festival existant impacte également votre niveau de participation, en valorisant votre implication continue.<br></p>
+                                <p>💡 Plus vous êtes actif, plus votre niveau de participation augmente ! Cela permet de mesurer votre engagement et votre investissement dans la gestion des événements. 🎉</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -81,6 +81,8 @@ function updateFestival($id, $name, $location, $date, $description, $image, $off
         $stmt->bindParam(':image',$image, PDO::PARAM_STR);
         $stmt->bindParam(':official_website',$official_website, PDO::PARAM_STR);
 
+        $stmt->execute();
+
         return $stmt->execute();
     } catch (PDOException $e) {
         error_log("Erreur lors de la mise à jour du festival' : " . $e->getMessage());
