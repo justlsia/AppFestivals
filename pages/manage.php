@@ -59,8 +59,8 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
     <div class="container">
         <div class="card-container">
 
-            <?php if (isset($success)) echo "<p class='text-danger'>$success</p>";?>
-            <?php if (isset($error)) echo "<p class='text-danger'>$error</p>";?>
+            <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
+
             
             <h2 class="mt-5">🎛 Gestion des Festivals : Ajout, Modification et Suppression</h2>
             <p>Bienvenue sur la page de gestion des festivals, un espace réservé aux utilisateurs connectés qui

@@ -38,7 +38,7 @@ unset($_SESSION['error'], $_SESSION['success']);
 
             <h2 class="mt-5">Connexion</h2>
 
-            <?php if (isset($error)) echo "<p class='text-danger'>$error</p>"; ?>
+            <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
 
             <!-- Formulaire : connexion utilisateur -->
             <form method="post" action="../actions/process_login.php">

@@ -3,6 +3,21 @@
 session_start();
 require '../includes/functions.php';
 
+// Vérification si l'utilisateur est connecté
+if (empty($_SESSION['user']['username'])) {
+    die("Erreur : Aucun utilisateur connecté. ❌");
+}
+
+// Récupération de l'utilisateur
+$user = getUserByUsername($_SESSION['user']['username']);
+
+if (!$user || empty($user['id'])) {
+    die("Erreur : Utilisateur introuvable ou ID non valide. ❌");
+}
+
+$user_id = $user['id'];
+
+
 // Vérifier que l'id est présent dans l'URL
 if (!isset($_GET['id'])) {
     header('Location: manage.php');
@@ -31,9 +46,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
     // Mise à jour du festival
     if (updateFestival($id, $name, $location, $date, $description, $image, $official_website)) {
 
-        
+        // Vérifier le niveau de participation de l'utilisateur
+        $totalPoints = getParticipationUserById($user_id);
 
-        echo "Modification du festival avec succès.";
+        if ($totalPoints < 5) {
+            // Ajouter un point
+            $sucess = addParticipationLevel($user_id, $id); 
+            if ($success) {
+                echo "Participation ajoutée avec succès ! ✅";
+            } else {
+                echo "Erreur lors de l'ajout de la participation. ❌";
+            }
+        }
+
+        echo "Modification du festival avec succès. ✅";
         $_SESSION['success'] = "Modification du festival avec succès.";
         Sentry\captureMessage("✅ Edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    
         header("Location: ../pages/manage.php");
@@ -72,9 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
             <h2 class="mt-5">Modifier le Festival</h2>
 
             <!-- Vérifier si le festival est bien chargé -->
-            <?php if (isset($error)) : ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
+            <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
 
             <!-- Formulaire de mise à jour d'un festival -->
             <form method="post">

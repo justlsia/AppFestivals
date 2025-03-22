@@ -6,26 +6,20 @@ session_start();
 require '../includes/config.php';
 require '../includes/functions.php';
 
+
 // Vérification si l'utilisateur est connecté
-if (empty($_SESSION['user'])) {
-    die("❌ Erreur : Aucun utilisateur connecté.");
+if (empty($_SESSION['user']['username'])) {
+    die("Erreur : Aucun utilisateur connecté. ❌");
 }
 
-$username = $_SESSION['user']['username'];
-//var_dump($username); // Vérifie la valeur du username
+// Récupération de l'utilisateur
+$user = getUserByUsername($_SESSION['user']['username']);
 
-$user = getUserByUsername($username);
-//var_dump($user); // Vérifie ce que retourne la fonction
-
-if (!$user) {
-    die("❌ Erreur : Utilisateur non trouvé en base.");
+if (!$user || empty($user['id'])) {
+    die("Erreur : Utilisateur introuvable ou ID non valide. ❌");
 }
 
-if (!empty($user['id'])) {
-    $user_id = $user['id'];
-} else {
-    die("❌ Erreur : Impossible de récupérer l'ID utilisateur.");
-}
+$user_id = $user['id'];
 
 
 
@@ -78,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } catch (PDOException $e) {
         error_log("Erreur dans le processus d'ajout : " . $e->getMessage());
-        $_SESSION['error'] = "❌ Une erreur est survenue.";
+        $_SESSION['error'] = "Une erreur est survenue. ❌";
         header("Location: ../pages/manage.php");
     }
 
