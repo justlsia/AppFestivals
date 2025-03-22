@@ -13,6 +13,8 @@ body {
     background-attachment: fixed; /* Fixe l'image pour qu'elle ne défile pas */
 }
 
+
+
 .container {
     max-width: 800px;
     margin-top: 30px;

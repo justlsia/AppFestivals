@@ -41,6 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
 
+
+        // Vérifier si le festival existe déja 
+        if (checkFestivalExist($name, $location, $date) > 0) {
+            $_SESSION['error'] = "Ce festival existe déjà ! ⚠️";
+            header("Location: ../pages/manage.php");
+            exit();
+        }
+
         // Ajouter un festival et récupérer son ID
         $festival_id = addFestival($name, $location, $date, $description, $image, $official_website);
 
@@ -69,8 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     } catch (PDOException $e) {
-
-        echo "Erreur lors de l'ajout du festival : " . $e->getMessage();
+        error_log("Erreur dans le processus d'ajout : " . $e->getMessage());
+        $_SESSION['error'] = "❌ Une erreur est survenue.";
+        header("Location: ../pages/manage.php");
     }
 
 }

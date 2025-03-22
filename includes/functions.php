@@ -6,6 +6,34 @@ require 'config.php'; // Connexion BDD
 // ----- FESTIVALS -----
 
 /**
+ * Vérifier si un festival existe selon son nom, sa localisationou sa date
+ */
+function checkFestivalExist($name, $location, $date) {
+    global $pdo;
+
+    try {
+        // Requête : Vérifier si un festival existe
+        $req = "SELECT id 
+            FROM festivals 
+            WHERE LOWER(name) = LOWER(:name) 
+            AND LOWER(location) = LOWER(:location) 
+            AND date = :date";
+
+        $stmt = $pdo->prepare($req);
+        $stmt->bindParam(':name',$name, PDO::PARAM_STR);
+        $stmt->bindParam(':location',$location, PDO::PARAM_STR);
+        $stmt->bindParam(':date',$date, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la vérification de l'existance du festival : " . $e->getMessage());
+        return [];
+    }
+}
+
+
+/**
  * Récupèrer un festival par son id
  */
 function getFestivalById($id) {
