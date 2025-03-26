@@ -1,7 +1,11 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    session_start();  
 }
+
+//$user_admin = $_SESSION['user']['administrateur'];
+$user_admin = isset($_SESSION['user']['administrateur']) ? $_SESSION['user']['administrateur'] : 0;
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,6 +52,14 @@ if (session_status() === PHP_SESSION_NONE) {
                     <?php if (isset($_SESSION['user'])): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/profil.php">Mon profil</a>
+                    </li>
+                    <?php endif; ?>
+
+                    <!-- Afficher le lien "Administration" uniquement si l'utilisateur connecté est un administrateur -->
+                    <?php if ($user_admin == 1): ?>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/administration.php">Administration</a>
                     </li>
                     <?php endif; ?>
 
