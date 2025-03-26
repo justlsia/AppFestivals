@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                         <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
                         <?php endfor; ?>
                     </div>
-                    <!-- 🔥 Bouton "?" pour afficher les infos -->
+                    <!-- Bouton "?" pour afficher les infos -->
                     <button type="button" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#infoModal">?</button>
                 </div>
 
