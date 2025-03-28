@@ -257,18 +257,20 @@ function getUserProfile($user_id) {
 /**
  * Mettre à jour le profil un l'utilisateur.
  */
-function updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture) {
+function updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur) {
     global $pdo;
 
     try {
         // Requête : Mettre à jour un profil utilisateur
-        $req = "UPDATE users SET 
+        $req = "UPDATE users 
+            SET 
             username = :username, 
             name = :name, 
             firstname = :firstname, 
             age = :age, 
             email = :email, 
-            profile_picture = :profile_picture 
+            profile_picture = :profile_picture,
+            administrateur = :administrateur 
             WHERE id = :id";    
 
         $stmt = $pdo->prepare($req);
@@ -280,6 +282,7 @@ function updateUserProfile($user_id, $username, $name, $firstname, $age, $email,
         $stmt->bindParam(':age', $age, PDO::PARAM_INT);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':profile_picture', $profile_picture, PDO::PARAM_STR);
+        $stmt->bindParam(':administrateur', $administrateur, PDO::PARAM_INT);
 
         return $stmt->execute();
     } catch (PDOException $e) {
@@ -363,6 +366,7 @@ function getAllUsers($limit, $offset) {
             from users
             left join participations
             on users.id = participations.user_id
+            GROUP BY users.id
             ORDER BY username
             LIMIT :limit 
             OFFSET :offset;";

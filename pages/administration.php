@@ -27,9 +27,6 @@ $users = getAllUsers($usersParPage, $offset);
 $totalUsers = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 $totalPages = ceil($totalUsers / $usersParPage);
 
-// Formater la date de dernière participation
-//$dateTimeLastParticipation = $users['participation_date'];
-//$lastParticipation = $dateTime->format('Y-m-d');
 
 ?>
 
@@ -96,15 +93,21 @@ $totalPages = ceil($totalUsers / $usersParPage);
                             <?php if ($user['participation_date']) {
                                 // Créer un objet DateTime à partir de 'participation_date' et formater la date
                                 $dateLastParticipation = new DateTime($user['participation_date']);
-                                echo htmlspecialchars($dateLastParticipation->format('j, n, Y'));
+                                echo htmlspecialchars($dateLastParticipation->format('j/m/Y'));
                             } else {
-                                echo '0';
+                                echo '/';
                             }
                             ?>
                         </td>
                         <!-- Compte administrateur ou non -->
                         <td>
-                            <?= htmlspecialchars($user['administrateur']) ?>
+                            <?php  
+                            if (isset($user['administrateur']) && $user['administrateur'] === 1) {
+                                echo htmlspecialchars('Oui');
+                            } else {
+                                echo htmlspecialchars('Non');
+                            }
+                            ?>
                         </td>
                         <td>
                             <a title="Supprimer l'utilisateur" href="../actions/delete_user.php?id=<?= $user['id'] ?>" class="btn btn-danger" onclick="return confirm('Supprimer cet utilisateur ?')">Supprimer</a>

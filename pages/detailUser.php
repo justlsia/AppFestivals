@@ -29,7 +29,7 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Titre de la page + nom de l'utilisateur recherché -->
-    <title><?= htmlspecialchars($user['name']) ?></title>
+    <title><?= htmlspecialchars($user['username']) ?></title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
@@ -48,26 +48,34 @@ if (!$user) {
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" class="card-img-top" alt="<?= htmlspecialchars($user['username']) ?>">
             
             <div class="card-body">
-                <h5 class="card-title"><strong>Username : </strong><?= htmlspecialchars($user['username']) ?></h5>
+                <h5 class="card-title"><strong>Nom d'utilisateur : </strong><?= htmlspecialchars($user['username']) ?></h5>
                 <hr>
                 <p class="card-text"><strong>Nom/prénom : </strong><?= htmlspecialchars($user['name']) . " " . htmlspecialchars($user['firstname'])  ?></p>
-                <p class="card-text"><strong>Email : </strong><?= htmlspecialchars($user['email']) ?></p>
-                <p class="card-text"><strong>Age : </strong><?= htmlspecialchars($user['age']) ?></p>
+                <p class="card-text"><strong>Email : </strong><?=htmlspecialchars($user['email']) ?></p>
+                <p class="card-text"><strong>Age : </strong><?= htmlspecialchars($user['age']) ?> ans</p>
   
                 <p class="card-text"><strong>Niveau de participation : 
                     <div class="rating ms-2">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <span class="star <?= ($i <= $user['participation_level']) ? 'filled' : ''; ?>">★</span>
-                                <?php endfor; ?>
-                            </div>
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <span class="star <?= ($i <= $user['participation_level']) ? 'filled' : ''; ?>">★</span>
+                        <?php endfor; ?>
+                    </div>
                 </p>
                 
-                <p class="card-text"><strong>Compte administrateur : </strong><?= htmlspecialchars($user['administrateur']) ?></p>
+                <p class="card-text"><strong>Compte administrateur : </strong>
+                    <?php if (isset($user['administrateur']) && $user['administrateur'] === 1) {
+                                echo htmlspecialchars('✅');
+                            } else {
+                                echo htmlspecialchars('❌');
+                            } 
+                    ?>
+                </p>
             </div>
 
             <!-- Retour à l'acceuil (liste des festivals) -->
             <div class="card-body text-center">
-                <a href="festivals.php" class="btn btn-primary">Retour</a>
+                <a href="administration.php" class="btn btn-primary">Retour</a>
+                <a href="../actions/edit_user.php?id=<?= $user['id'] ?>" class="btn btn-warning">Modifier</a>
             </div>
 
         </div>
