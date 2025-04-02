@@ -5,6 +5,7 @@ session_start();
 
 require '../includes/config.php';
 require '../includes/functions.php';
+require '../includes/header.php';
 
 
 // Vérification si l'utilisateur est connecté
@@ -107,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" name="name" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Lieu</label>
+                    <label class="form-label">Lieu (Ville, Pays)</label>
                     <input type="text" name="location" class="form-control" required>
                 </div>
                 <div class="mb-3">

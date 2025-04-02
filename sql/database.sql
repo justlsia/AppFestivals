@@ -302,10 +302,20 @@ FLUSH PRIVILEGES;
 
 CREATE TABLE participations (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id BYTE NOT NULL,
-    festival_id BYTE NOT NULL,
-    points TINYINT NOT NULL CHECK (points BETWEEN 1 AND 5),
+    user_id INT NOT NULL,
+    festival_id INT NOT NULL,
+    points INT NOT NULL CHECK (points BETWEEN 1 AND 5),
     participation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (festival_id) REFERENCES festivals(id) ON DELETE CASCADE
 );
+
+
+ALTER TABLE users ADD COLUMN administrateur BOOLEAN DEFAULT FALSE;
+
+update users set administrateur = 1 where id = 5;
+
+
+
+ALTER TABLE participations MODIFY user_id INT NOT NULL;
+ALTER TABLE participations MODIFY festival_id INT NOT NULL;

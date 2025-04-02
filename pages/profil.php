@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $age = trim($_POST["age"]);
     $email = trim($_POST["email"]);
     $profile_picture = $user['profile_picture']; // Conserver l'ancienne photo si non modifiée
+    $administrateur = $user['administrateur'];
     //$participation_level = $user['participation_level'];
 
     if (!empty($_FILES['profile_picture']['name'])) {
@@ -70,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         }
     }
 
-    if (updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture)) {
+    if (updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur)) {
         $_SESSION['success'] = "Profil mis à jour avec succès.";
     } else {
         $_SESSION['error'] = "Erreur lors de la mise à jour du profil.";
@@ -121,7 +122,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <?php else: ?>
                     <span>Pas de photo</span>
                     <img src="../uploads/default_avanar.svg" alt="Photo de profil" width="100" class="mb-2"
-                        <?php endif; ?> </p>
+                        <?php endif; ?> 
+                </p>
                 <p><strong>Nom d'utilisateur :</strong> <?= htmlspecialchars($user['username']) ?></p>
                 <p><strong>Nom :</strong> <?= htmlspecialchars($user['name']) ?></p>
                 <p><strong>Prénom :</strong> <?= htmlspecialchars($user['firstname']) ?></p>
@@ -135,11 +137,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                         <span class="star <?= ($i <= $participation_level) ? 'filled' : ''; ?>">★</span>
                         <?php endfor; ?>
                     </div>
-                    <!-- 🔥 Bouton "?" pour afficher les infos -->
+                    <!-- Bouton "?" pour afficher les infos -->
                     <button type="button" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#infoModal">?</button>
                 </div>
 
-                <!-- 📌 Modal (POPUP) d'information -->
+                <!-- Modal (POPUP) d'information -->
                 <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">

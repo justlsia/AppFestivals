@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../includes/config.php';
+require '../includes/header.php';
 
 // Vérifier si un ID (id d'un festival) est passé en paramètre
 if (!isset($_GET['id']) || empty($_GET['id'])) {

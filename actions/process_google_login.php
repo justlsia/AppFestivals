@@ -59,13 +59,13 @@ if (isset($_POST['credential'])) {
                 "name" => $user['name']
             ];
         } else {
-            // 🔴 Créer un utilisateur Google
+            // Créer un utilisateur Google
             addUserByGoogleAuth($google_id, $email, $username, $name, $firstname);
         
             // 🔄 Récupérer le nouvel ID
             $newUserId = $pdo->lastInsertId();
         
-            // 🟢 Stocke correctement les infos en session
+            // Stocke correctement les infos en session
             $_SESSION['user'] = [
                 "id" => $newUserId,
                 "username" => $name,

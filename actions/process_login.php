@@ -16,7 +16,8 @@ try {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user'] = [
                 "id" => $user['id'],
-                "username" => $user['username']
+                "username" => $user['username'],
+                "administrateur" => $user['administrateur']
             ];
             $_SESSION['success'] = "Connexion réussie !";
             Sentry\captureMessage("✅ Session start. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username);

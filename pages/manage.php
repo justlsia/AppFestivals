@@ -4,6 +4,8 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : "";
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : "";
 unset($_SESSION['error'], $_SESSION['success']);
 require '../includes/config.php';
+require '../includes/header.php';
+
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user'])) {
@@ -60,7 +62,6 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
         <div class="card-container">
 
             <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
-
             
             <h2 class="mt-5">🎛 Gestion des Festivals : Ajout, Modification et Suppression</h2>
             <p>Bienvenue sur la page de gestion des festivals, un espace réservé aux utilisateurs connectés qui

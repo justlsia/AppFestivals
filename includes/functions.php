@@ -16,8 +16,8 @@ function checkFestivalExist($name, $location, $date) {
         $req = "SELECT id 
             FROM festivals 
             WHERE LOWER(name) = LOWER(:name) 
-            AND LOWER(location) = LOWER(:location) 
-            AND date = :date";
+            OR LOWER(location) = LOWER(:location) 
+            OR date = ':date'";
 
         $stmt = $pdo->prepare($req);
         $stmt->bindParam(':name',$name, PDO::PARAM_STR);
@@ -257,18 +257,20 @@ function getUserProfile($user_id) {
 /**
  * Mettre à jour le profil un l'utilisateur.
  */
-function updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture) {
+function updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur) {
     global $pdo;
 
     try {
         // Requête : Mettre à jour un profil utilisateur
-        $req = "UPDATE users SET 
+        $req = "UPDATE users 
+            SET 
             username = :username, 
             name = :name, 
             firstname = :firstname, 
             age = :age, 
             email = :email, 
-            profile_picture = :profile_picture 
+            profile_picture = :profile_picture,
+            administrateur = :administrateur 
             WHERE id = :id";    
 
         $stmt = $pdo->prepare($req);
@@ -280,6 +282,7 @@ function updateUserProfile($user_id, $username, $name, $firstname, $age, $email,
         $stmt->bindParam(':age', $age, PDO::PARAM_INT);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':profile_picture', $profile_picture, PDO::PARAM_STR);
+        $stmt->bindParam(':administrateur', $administrateur, PDO::PARAM_INT);
 
         return $stmt->execute();
     } catch (PDOException $e) {
@@ -309,6 +312,99 @@ function getUserByUsername($username) {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         error_log("Erreur lors de la récupération de l'utilisateur par son username' : " . $e->getMessage());
+        return [];
+    } 
+}
+
+
+/**
+ * Vérifier si un utilisateur est administrateur ou non (true si oui, false si non)
+ */
+function checkUserAdministrator($id) {
+    global $pdo;
+    
+    try {
+        // Requête : Récupérer la valeur (1ou 0) si l'user est administrateur ou non
+        $req = "SELECT administrateur 
+            FROM users 
+            WHERE id = :id";
+
+        $stmt = $pdo->prepare($req);
+        // Lier le paramètre
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la récupération du niveau d'administration de l'utilisateur' : " . $e->getMessage());
+        return [];
+    } 
+}
+
+
+/**
+ * Charger la liste des utilisateurs et de leurs participations (si existantes)
+ */
+function getAllUsers($limit, $offset) {
+    global $pdo;
+    
+    try {
+        // Requête : Récupérer la valeur (1 ou 0) si l'user est administrateur ou non
+        $req = "SELECT 
+            users.id, 
+            users.username, 
+            users.name, 
+            users.firstname, 
+            users.age, users.email, 
+            users.profile_picture, 
+            users.participation_level, 
+            users.administrateur, 
+            participations.id AS participation_id, 
+            participations.user_id, 
+            participations.participation_date
+            from users
+            left join participations
+            on users.id = participations.user_id
+            GROUP BY users.id
+            ORDER BY username
+            LIMIT :limit 
+            OFFSET :offset;";
+
+        $stmt = $pdo->prepare($req);
+
+        // Lier le paramètre
+        $stmt->bindParam(':limit',$limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset',$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la récupération de la liste des utilisateurs' : " . $e->getMessage());
+        return [];
+    } 
+}
+
+
+/**
+ * Supprimer un utilisateur selon son id
+ */
+function deleteUser($id) {
+    global $pdo;
+
+    try {
+        // Requête : Supprimer un user selon son id
+        $req = "DELETE FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($req);
+
+        // Lier le paramètre
+        $stmt->bindParam(':id',$id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la suppression de l'utilisateur' : " . $e->getMessage());
         return [];
     } 
 }
@@ -520,6 +616,42 @@ function getParticipationUserById($user_id){
         return $totalPoints;
     } catch (PDOException $e) {
         error_log("Erreur lors de la récupération des points de l'utilisateur'' : " . $e->getMessage());
+        return 0;
+    } 
+
+}
+
+
+
+/**
+* Mettre à jours les points de participations de l'utilisateurs (dans la table users)
+*/
+function updateParticipationUserById($user_id){
+    global $pdo;
+    try {
+
+        // Récupérer les points de participations de l'utilisateur
+        $totalPntsParticipation = getParticipationUserById($user_id);
+
+        // Arrondir à 5 si points de partcipatiosn supérieur
+        if ($totalPntsParticipation > 5) {
+            $totalPntsParticipation = 5;
+        }
+
+        // Requête : Mettre à jour les points de participations d'un utilisateur selon son id et ses participations
+        $req = "UPDATE users SET
+            participation_level = :totalPntsParticipation
+            WHERE id = :id;";
+
+        $stmt = $pdo->prepare($req);
+
+        // Lier les paramètres
+        $stmt->bindParam(':user_id',$user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':totalPntsParticipation',$totalPntsParticipation, PDO::PARAM_INT);
+
+        return $$stmt->execute();;
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la mise à jour des points de participations'' : " . $e->getMessage());
         return 0;
     } 
 
