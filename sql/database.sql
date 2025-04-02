@@ -296,6 +296,7 @@ CREATE USER 'userFestival'@'localhost' IDENTIFIED BY '4S6aF4lzBo7Nu3S9nsmM';
 
 GRANT ALL PRIVILEGES ON festival_db.* TO 'userFestival'@'localhost';
 
+FLUSH PRIVILEGES;
 
 
 
