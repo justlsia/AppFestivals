@@ -40,13 +40,14 @@ if (!$festival) {
 </head>
 
 <body>
-    
+
     <!-- Containeur : Fiche detail d'un festival -->
     <div class="container mt-5">
         <div class="card mx-auto" style="width: 24rem;">
 
-            <img src="<?= htmlspecialchars($festival['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($festival['name']) ?>">
-            
+            <img src="<?= htmlspecialchars($festival['image']) ?>" class="card-img-top"
+                alt="<?= htmlspecialchars($festival['name']) ?>">
+
             <div class="card-body">
                 <h5 class="card-title"><?= htmlspecialchars($festival['name']) ?></h5>
                 <p class="card-text"><?= htmlspecialchars($festival['description']) ?></p>
@@ -58,12 +59,16 @@ if (!$festival) {
             </ul>
 
             <div class="card-body text-center">
-            <a href="<?= htmlspecialchars($festival['official_website']) ?>" class="card-link" target="_blank">Accéder au site officiel</a>
+                <a href="<?= htmlspecialchars($festival['official_website']) ?>" class="card-link"
+                    target="_blank">Accéder au site officiel</a>
             </div>
 
             <!-- Retour à l'acceuil (liste des festivals) -->
-            <div class="card-body text-center">
+            <div class="card-body text-center d-flex justify-content-center gap-2">
                 <a href="festivals.php" class="btn btn-primary">Retour</a>
+                <?php if (isset($_SESSION['user'])): ?>
+                <a href="../actions/edit_festival.php?id=<?= $festival['id'] ?>" class="btn btn-warning">Modifier</a>
+                <?php endif; ?>
             </div>
 
         </div>
