@@ -2,6 +2,7 @@
 
 session_start();
 require '../includes/functions.php';
+require '../includes/header.php';
 
 // Vérification si l'utilisateur est connecté
 if (empty($_SESSION['user']['username'])) {
@@ -53,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
             // Ajouter un point
             $sucess = addParticipationLevel($user_id, $id); 
             if ($success) {
+                $test = updateParticipationUserById($user_id); // Maj du total des points TEST
                 echo "Participation ajoutée avec succès ! ✅";
             } else {
                 echo "Erreur lors de l'ajout de la participation. ❌";
@@ -135,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
 
                 <div class="mb-3">
                     <label class="form-label">Lien vers le site officiel du festival</label>
-                    <input type="text" name="image" class="form-control"
+                    <input type="text" name="official_website" class="form-control"
                         value="<?= htmlspecialchars($festival['official_website']) ?>" required>
                 </div>
 

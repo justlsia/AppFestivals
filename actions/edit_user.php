@@ -2,6 +2,7 @@
 
 session_start();
 require '../includes/functions.php';
+require '../includes/header.php';
 
 
 // Vérification si l'utilisateur est connecté
@@ -9,6 +10,8 @@ if (empty($_SESSION['user']['username'])) {
     die("Erreur : Aucun utilisateur connecté. ❌");
 }
 
+// Récupération de l'utilisateur
+$user = getUserByUsername($_SESSION['user']['username']);
 
 if (!$user || empty($user['id'])) {
     die("Erreur : Utilisateur introuvable ou ID non valide. ❌" );
@@ -127,6 +130,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
                         <option value="0" <?php if ($userUpdate['administrateur'] == 0) echo 'selected'; ?>>Non</option>
                         <option value="1" <?php if ($userUpdate['administrateur'] == 1) echo 'selected'; ?>>Oui</option>
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Photo de profil :</label><br>
+                    <?php if ($userUpdate['profile_picture']): ?>
+                    <img src="<?= htmlspecialchars($userUpdate['profile_picture']) ?>" alt="Photo de profil" width="100"
+                        class="mb-2">
+                    <?php endif ?>
                 </div>
 
                 <!-- Mettre à jour l'utilisateur -->

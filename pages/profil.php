@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <button type="button" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#infoModal">?</button>
                 </div>
 
-                <!-- 📌 Modal (POPUP) d'information -->
+                <!-- Modal (POPUP) d'information -->
                 <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">

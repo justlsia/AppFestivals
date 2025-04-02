@@ -4,6 +4,7 @@ $error = isset($_SESSION['error']) ? $_SESSION['error'] : "";
 $success = isset($_SESSION['success']) ? $_SESSION['success'] : "";
 unset($_SESSION['error'], $_SESSION['success']);
 require '../includes/config.php';
+require '../includes/header.php';
 
 
 // Vérification si l'utilisateur est connecté

@@ -350,7 +350,7 @@ function getAllUsers($limit, $offset) {
     global $pdo;
     
     try {
-        // Requête : Récupérer la valeur (1ou 0) si l'user est administrateur ou non
+        // Requête : Récupérer la valeur (1 ou 0) si l'user est administrateur ou non
         $req = "SELECT 
             users.id, 
             users.username, 
@@ -616,6 +616,42 @@ function getParticipationUserById($user_id){
         return $totalPoints;
     } catch (PDOException $e) {
         error_log("Erreur lors de la récupération des points de l'utilisateur'' : " . $e->getMessage());
+        return 0;
+    } 
+
+}
+
+
+
+/**
+* Mettre à jours les points de participations de l'utilisateurs (dans la table users)
+*/
+function updateParticipationUserById($user_id){
+    global $pdo;
+    try {
+
+        // Récupérer les points de participations de l'utilisateur
+        $totalPntsParticipation = getParticipationUserById($user_id);
+
+        // Arrondir à 5 si points de partcipatiosn supérieur
+        if ($totalPntsParticipation > 5) {
+            $totalPntsParticipation = 5;
+        }
+
+        // Requête : Mettre à jour les points de participations d'un utilisateur selon son id et ses participations
+        $req = "UPDATE users SET
+            participation_level = :totalPntsParticipation
+            WHERE id = :id;";
+
+        $stmt = $pdo->prepare($req);
+
+        // Lier les paramètres
+        $stmt->bindParam(':user_id',$user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':totalPntsParticipation',$totalPntsParticipation, PDO::PARAM_INT);
+
+        return $$stmt->execute();;
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la mise à jour des points de participations'' : " . $e->getMessage());
         return 0;
     } 
 

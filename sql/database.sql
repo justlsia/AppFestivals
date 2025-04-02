@@ -313,3 +313,8 @@ CREATE TABLE participations (
 ALTER TABLE users ADD COLUMN administrateur BOOLEAN DEFAULT FALSE;
 
 update users set administrateur = 1 where id = 5;
+
+
+
+ALTER TABLE participations MODIFY user_id INT NOT NULL;
+ALTER TABLE participations MODIFY festival_id INT NOT NULL;

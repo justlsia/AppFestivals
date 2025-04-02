@@ -5,6 +5,7 @@ session_start();
 
 require '../includes/config.php';
 require '../includes/functions.php';
+require '../includes/header.php';
 
 
 // Vérification si l'utilisateur est connecté

@@ -2,6 +2,7 @@
 session_start();
 require '../includes/config.php';
 require '../includes/functions.php';
+require '../includes/header.php';
 
 // Vérifier si un ID (id d'un utilisateur) est passé en paramètre
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -75,7 +76,12 @@ if (!$user) {
             <!-- Retour à l'acceuil (liste des festivals) -->
             <div class="card-body text-center">
                 <a href="administration.php" class="btn btn-primary">Retour</a>
-                <a href="../actions/edit_user.php?id=<?= $user['id'] ?>" class="btn btn-warning">Modifier</a>
+                
+                <!-- Mettre à jour l'utilisateur (sauf pour les connexion avec Google )-->
+                <?php if($user['google_id'] == Null) { ?>
+                    <a href="../actions/edit_user.php?id=<?= $user['id'] ?>" class="btn btn-warning">Modifier</a>
+                <?php } ?>
+
             </div>
 
         </div>

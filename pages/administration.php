@@ -60,9 +60,60 @@ $totalPages = ceil($totalUsers / $usersParPage);
             <!-- Titre du containeur principale -->
             <h2 class="mt-5">Administration de App Festival</h2>
 
-            <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, earum! Sed beatae labore adipisci culpa corporis dolore, laboriosam nobis dolor eveniet! Numquam non nemo esse adipisci eos ea explicabo sunt!</h4>
-            <p class="text-start">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius placeat reprehenderit aliquid ratione sapiente officia vitae debitis, maxime totam tenetur itaque aliquam eveniet porro accusamus vel aut. Dignissimos, unde voluptatum.
-            </p>
+            <p>Bienvenue sur la page d'administration des utilisateurs. Cette interface vous permet de gérer les comptes des utilisateurs.</p>
+
+            <!-- Popup d'informations de gestion des utilisateurs -->
+            <!-- Bouton pour ouvrir la popup -->
+            <button class="btn btn-warning mb-3" onclick="openPopup()">Informations !</button>
+
+            <!-- Popup personnalisée -->
+            <div id="customModal" class="custom-modal" style="display: none;">
+                <div class="custom-modal-content">
+
+                <h5 class="modal-title">🛠️ Administration des utilisateurs : Ajout, Modification et Suppression</h5>
+                    <hr>
+                    <div class="modal-body">
+                        <h4>✍ Consulter et modifier un profil</h4>
+                        <p>Cliquez sur une ligne du tableau pour accéder à la fiche détaillée de l'utilisateur. Depuis cette fiche, vous pouvez modifier ses informations.</p>
+
+                        <h4>✏ Attribuer ou révoquer les droits d'administration</h4>
+                        <p> Vous pouvez promouvoir un utilisateur en administrateur. Une fois les droits accordés, il pourra accéder aux fonctionnalités d'administration.</p>
+
+                        <h4>🗑 Supprimer un utilisateur</h4>
+                        <p>Supprimez définitivement un compte si nécessaire. Attention, cette action est irréversible.</p>
+
+                        <p>Utilisez cette page avec précaution pour garantir une gestion optimale des utilisateurs et de leurs permissions.</p>
+
+                        <hr>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closePopup()">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Ouverture/fermeture de la popup -->
+            <script>
+            /*
+             * Ouvrir une popup
+             */
+            function openPopup() {
+                let modal = document.getElementById("customModal");
+                if (modal) {
+                    modal.style.display = "flex";
+                }
+            }
+            /*
+             * Fermer une popup
+             */
+            function closePopup() {
+                let modal = document.getElementById("customModal");
+                if (modal) {
+                    modal.style.display = "none";
+                }
+            }
+            </script>
 
             <!-- Table des utilisateurs -->
             <table class="table table-striped">
