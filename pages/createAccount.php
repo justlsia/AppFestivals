@@ -68,13 +68,13 @@
                 <button type="submit" class="btn btn-primary">Créer mon compte</button>
             </form>
 
-            <!-- Retour à l'acceuil (Liste des festivals) -->
-            <a href="festivals.php" class="btn btn-success">Retour à l'accueil</a>
+        <!-- Retour à l'acceuil (Liste des festivals) -->
+        <a href="festivals.php" class="btn btn-success">Retour à l'accueil</a>
 
-        </div>
+    </div>
 
-        <!-- Vérification des informations entrées -->
-        <script src="../js/createAccount.js" defer></script>
+    <!-- Vérification des informations entrées -->
+    <!--<script src="../js/createAccount.js" defer></script>-->
 
 </body>
 

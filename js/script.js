@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const deleteButtons = document.querySelectorAll(".btn-danger");
     deleteButtons.forEach(button => {
         button.addEventListener("click", function (e) {
-            if (!confirm("Êtes-vous sûr de vouloir supprimer ce festival ?")) {
+            if (!confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
                 e.preventDefault();
             }
         });
