@@ -319,3 +319,5 @@ update users set administrateur = 1 where id = 5;
 
 ALTER TABLE participations MODIFY user_id INT NOT NULL;
 ALTER TABLE participations MODIFY festival_id INT NOT NULL;
+
+ALTER TABLE users MODIFY profile_picture VARCHAR(900);

@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
 session_start();
 require '../includes/functions.php';
 require '../includes/header.php';
@@ -17,7 +21,6 @@ if (!$user || empty($user['id'])) {
     die("Erreur : Utilisateur introuvable ou ID non valide. ❌" );
 }
     
-
 
 // Vérifier que l'id de l'utilisateur à modifier est présent dans l'URL
 if (!isset($_GET['id'])) {
@@ -43,12 +46,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
     $firstname = $_POST['firstname'];
     $age = $_POST['age'];
     $email = $_POST['email'];
-    $profile_picture = $_POST['profile_picture'];
     $administrateur = $_POST['administrateur'];
 
-    // Mise à jour de l'utilisateur
-    if (updateUserProfile($id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur)) {
 
+    // Mise à jour de l'utilisateur
+    if (updateUser($id, $username, $name, $firstname, $age, $email, $administrateur)) {
+        
         echo "Modification de l'utilisateur avec succès. ✅";
         $_SESSION['success'] = "Modification de l'utilisateur avec succès.";
         Sentry\captureMessage("✅ Edit user. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name user : " . $name ); // Log    
@@ -130,14 +133,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
                         <option value="0" <?php if ($userUpdate['administrateur'] == 0) echo 'selected'; ?>>Non</option>
                         <option value="1" <?php if ($userUpdate['administrateur'] == 1) echo 'selected'; ?>>Oui</option>
                     </select>
-                </div>
-
-                <div class="mb-3">
-                    <label>Photo de profil :</label><br>
-                    <?php if ($userUpdate['profile_picture']): ?>
-                    <img src="<?= htmlspecialchars($userUpdate['profile_picture']) ?>" alt="Photo de profil" width="100"
-                        class="mb-2">
-                    <?php endif ?>
                 </div>
 
                 <!-- Mettre à jour l'utilisateur -->

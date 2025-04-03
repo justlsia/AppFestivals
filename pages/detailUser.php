@@ -46,28 +46,31 @@ if (!$user) {
 </head>
 
 <body>
-    
+
     <!-- Containeur : Fiche detail d'un utilisateur -->
     <div class="container mt-5">
         <div class="card mx-auto" style="width: 24rem;">
 
-            <img src="<?= htmlspecialchars($user['profile_picture']) ?>" class="card-img-top" alt="<?= htmlspecialchars($user['username']) ?>">
-            
+            <img src="<?= htmlspecialchars($user['profile_picture']) ?>" class="card-img-top"
+                alt="<?= htmlspecialchars($user['username']) ?>">
+
             <div class="card-body">
-                <h5 class="card-title"><strong>Nom d'utilisateur : </strong><?= htmlspecialchars($user['username']) ?></h5>
+                <h5 class="card-title"><strong>Nom d'utilisateur : </strong><?= htmlspecialchars($user['username']) ?>
+                </h5>
                 <hr>
-                <p class="card-text"><strong>Nom/prénom : </strong><?= htmlspecialchars($user['name']) . " " . htmlspecialchars($user['firstname'])  ?></p>
+                <p class="card-text"><strong>Nom/prénom :
+                    </strong><?= htmlspecialchars($user['name']) . " " . htmlspecialchars($user['firstname'])  ?></p>
                 <p class="card-text"><strong>Email : </strong><?=htmlspecialchars($user['email']) ?></p>
                 <p class="card-text"><strong>Age : </strong><?= htmlspecialchars($user['age']) ?> ans</p>
-  
-                <p class="card-text"><strong>Niveau de participation : 
-                    <div class="rating ms-2">
-                        <?php for ($i = 1; $i <= 5; $i++): ?>
+
+                <p class="card-text"><strong>Niveau de participation :
+                        <div class="rating ms-2">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
                             <span class="star <?= ($i <= $user['participation_level']) ? 'filled' : ''; ?>">★</span>
-                        <?php endfor; ?>
-                    </div>
+                            <?php endfor; ?>
+                        </div>
                 </p>
-                
+
                 <p class="card-text"><strong>Compte administrateur : </strong>
                     <?php if (isset($user['administrateur']) && $user['administrateur'] === 1) {
                                 echo htmlspecialchars('✅');
@@ -76,21 +79,21 @@ if (!$user) {
                             } 
                     ?>
                 </p>
-                <!-- Mettre à jour l'utilisateur (sauf pour les connexion avec Google )-->
-                <?php if($user['google_id'] == Null) { ?>
-                    <p>(Compte Google non modifiable)</p>
-                <?php } ?>
+                
 
             </div>
 
             <!-- Retour à l'acceuil (liste des festivals) -->
             <div class="card-body text-center">
                 <a href="administration.php" class="btn btn-primary">Retour</a>
-                
-                <!-- Mettre à jour l'utilisateur (sauf pour les connexion avec Google )-->
-                <?php if($user['google_id'] == Null) { ?>
+
+                <!-- Mettre à jour l'utilisateur (sauf pour les connexions avec Google) -->
+                <?php if ($user['google_id'] == null || $user['google_id'] == 0) { ?>
                     <a href="../actions/edit_user.php?id=<?= $user['id'] ?>" class="btn btn-warning">Modifier</a>
+                <?php } else { ?>
+                    <p>(Compte Google non modifiable)</p>
                 <?php } ?>
+
 
             </div>
 

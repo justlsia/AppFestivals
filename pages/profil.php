@@ -50,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
 }
 
 
-
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         <div id="popupContainer" class="popup" style="display: none;">
             <div class="popup-content">
                 <p id="popupMessage"></p>
-                <button id="closePopupBtn" onclick="closePop()">OK</button>
+                <button id="closePopupBtn" onclick="closePop()" class="btn btn-primary">OK</button>
             </div>
         </div>
 
@@ -205,12 +204,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     <?php
     // Vérifier si un message de popup est stocké dans la session
     if (isset($_SESSION['popup_message'])) {
-        $message = $_SESSION['popup_message'];
+        $message = json_encode($_SESSION['popup_message']);
         $status = $_SESSION['popup_status'] ? 'true' : 'false';
 
         echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
-            showPopup(" . ($status ? "true" : "false") . ");
+            showPopup($status, $message);
         });
         </script>";
 

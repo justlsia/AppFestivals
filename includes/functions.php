@@ -203,6 +203,38 @@ function registerUser($name, $firstname, $username, $age, $email, $password) {
 
 
 /**
+* Créer un utilisateur
+*/
+function createUser($name, $firstname, $username, $age, $email, $password, $profile_picture, $administrateur) {
+    global $pdo;
+
+    // Vérifier si le nom d'utilisateur ou l'email existe déjà
+    $stmt = $pdo->prepare("SELECT id 
+        FROM users 
+        WHERE username = ? OR email = ?");
+    $stmt->execute([$username, $email]);
+
+    if ($stmt->fetch()) {
+        return "Ce nom d'utilisateur ou cet e-mail est déjà utilisé.";
+    }
+
+    // Hashage du mot de passe
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Insérer l'utilisateur dans la base de données
+    $stmt = $pdo->prepare("INSERT INTO users 
+        (name, firstname, username, age, email, password, profile_picture, administrateur, participation_level) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)");
+
+    if ($stmt->execute([$name, $firstname, $username, $age, $email, $password, $profile_picture, $administrateur])) {
+        return "Compte créé avec succès !";
+    } else {
+        return "Erreur lors de l'inscription.";
+    }
+}
+
+
+/**
 * Connexion utilisateur
 */
 function loginUser($username, $password) {
@@ -255,7 +287,7 @@ function getUserProfile($user_id) {
 }
 
 /**
- * Mettre à jour le profil un l'utilisateur.
+ * Mettre à jour le profil l'utilisateur.
  */
 function updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur) {
     global $pdo;
@@ -282,6 +314,42 @@ function updateUserProfile($user_id, $username, $name, $firstname, $age, $email,
         $stmt->bindParam(':age', $age, PDO::PARAM_INT);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':profile_picture', $profile_picture, PDO::PARAM_STR);
+        $stmt->bindParam(':administrateur', $administrateur, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la mise à jour de l'utilisateur' : " . $e->getMessage());
+        return [];
+    } 
+}
+
+
+/**
+ * Mettre à jour un profil utilisateur.
+ */
+function updateUser($user_id, $username, $name, $firstname, $age, $email, $administrateur) {
+    global $pdo;
+
+    try {
+        // Requête : Mettre à jour un profil utilisateur
+        $req = "UPDATE users 
+            SET 
+            username = :username, 
+            name = :name, 
+            firstname = :firstname, 
+            age = :age, 
+            email = :email, 
+            administrateur = :administrateur 
+            WHERE id = :id";    
+
+        $stmt = $pdo->prepare($req);
+
+        $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':firstname', $firstname, PDO::PARAM_STR);
+        $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':administrateur', $administrateur, PDO::PARAM_INT);
 
         return $stmt->execute();

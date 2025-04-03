@@ -115,6 +115,9 @@ $totalPages = ceil($totalUsers / $usersParPage);
             }
             </script>
 
+            <!-- Ajouter un festival -->
+            <a href="../actions/create_user.php" class="btn btn-success mb-3">Ajouter un utilisateur</a>
+
             <!-- Table des utilisateurs -->
             <table class="table table-striped">
                 <thead>

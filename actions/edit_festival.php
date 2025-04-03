@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require '../includes/functions.php';
 require '../includes/header.php';
 
@@ -67,7 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
         header("Location: ../pages/manage.php");
         exit();
     } else {
-        $error = "Erreur lors de la mise à jour du festival.";
+        //$error = "Erreur lors de la mise à jour du festival.";
+        $_SESSION['popup_message'] = "Erreur lors de la mise à jour du festival.";
+        $_SESSION['popup_status'] = false; 
         Sentry\captureMessage("❌ Error edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    
     }
 }
@@ -96,7 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
 
     <div class="container">
         <div class="card-container">
-
             <h2 class="mt-5">Modifier le Festival</h2>
 
             <!-- Vérifier si le festival est bien chargé -->
@@ -149,6 +151,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
             </form>
         </div>
     </div>
+
+
+
 </body>
 
 </html>
