@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once "../includes/config.php";
 require '../includes/header.php';
 require_once "../includes/functions.php";
@@ -28,58 +29,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $firstname = trim($_POST["firstname"]);
     $age = trim($_POST["age"]);
     $email = trim($_POST["email"]);
-    $profile_picture = $user['profile_picture']; // Conserver l'ancienne photo si non modifiée
+    $profile_picture = $user['profile_picture']; 
     $administrateur = $user['administrateur'];
     //$participation_level = $user['participation_level'];
 
-    if (!empty($_FILES['profile_picture']['name'])) {
-        $target_dir = "../uploads/";
-    
-        // Vérifier le type de fichier
-        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-        $file_ext = strtolower(pathinfo($_FILES["profile_picture"]["name"], PATHINFO_EXTENSION));
-    
-        if (!in_array($file_ext, $allowed_types)) {
-            $_SESSION['error'] = "Format d'image non autorisé. Formats acceptés : jpg, jpeg, png, gif.";
-            header("Location: ../pages/profil.php");
-            exit();
-        }
-    
-        // Vérifier la taille du fichier (max 2MB)
-        if ($_FILES["profile_picture"]["size"] > 2 * 1024 * 1024) {
-            $_SESSION['error'] = "Fichier trop volumineux (max 2MB).";
-            header("Location: ../pages/profil.php");
-            exit();
-        }
-    
-        // Générer un nom unique pour éviter les conflits
-        $new_filename = "profile_" . $user_id . "_" . time() . "." . $file_ext;
-        $target_file = $target_dir . $new_filename;
-    
-        // Supprimer l'ancienne image si elle existe et n'est pas l'image par défaut
-        if ($user['profile_picture'] && $user['profile_picture'] !== "../uploads/default_avatar.svg") {
-            unlink($user['profile_picture']);
-        }
-    
-        // Déplacer l'image vers le dossier de destination
-        if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
-            $profile_picture = $target_file;
-        } else {
-            $_SESSION['error'] = "Erreur lors de l'upload de l'image.";
-            header("Location: ../pages/profil.php");
-            exit();
-        }
-    }
 
     if (updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur)) {
-        $_SESSION['success'] = "Profil mis à jour avec succès.";
+        //$_SESSION['success'] = "Profil mis à jour avec succès.";
+        $_SESSION['popup_message'] = "Profil mis à jour avec succès.";
+        $_SESSION['popup_status'] = true; 
+        
     } else {
-        $_SESSION['error'] = "Erreur lors de la mise à jour du profil.";
+        //$_SESSION['error'] = "Erreur lors de la mise à jour du profil.";
+        $_SESSION['popup_message'] = "Erreur lors de la mise à jour du profil.";
+        $_SESSION['popup_status'] = false; 
     }
 
     header("Location: ../pages/profil.php");
     exit();
 }
+
 
 
 ?>
@@ -104,10 +73,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         document.getElementById("editProfileForm").style.display = "block";
     }
     </script>
+
 </head>
 
 <body>
     <div class="container mt-5">
+
+
+        <!-- Popup d'informations -->
+        <div id="popupContainer" class="popup" style="display: none;">
+            <div class="popup-content">
+                <p id="popupMessage"></p>
+                <button id="closePopupBtn" onclick="closePop()">OK</button>
+            </div>
+        </div>
+
+        <script src="../js/popup.js"></script>
+
 
         <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
 
@@ -121,8 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <img src="<?= $user['profile_picture'] ?>" alt="Photo de profil" width="100" class="mb-2">
                     <?php else: ?>
                     <span>Pas de photo</span>
-                    <img src="../uploads/default_avanar.svg" alt="Photo de profil" width="100" class="mb-2"
-                        <?php endif; ?> 
+                    <img src="../uploads/default_avatar.svg" alt="Photo de profil" width="100" class="mb-2">
+                    <?php endif; ?>
                 </p>
                 <p><strong>Nom d'utilisateur :</strong> <?= htmlspecialchars($user['username']) ?></p>
                 <p><strong>Nom :</strong> <?= htmlspecialchars($user['name']) ?></p>
@@ -138,7 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                         <?php endfor; ?>
                     </div>
                     <!-- Bouton "?" pour afficher les infos -->
-                    <button type="button" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#infoModal">?</button>
+                    <button type="button" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal"
+                        data-bs-target="#infoModal">?</button>
                 </div>
 
                 <!-- Modal (POPUP) d'information -->
@@ -152,10 +135,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>⭐ Le niveau de participation évolue dynamiquement en fonction de votre engagement dans l'organisation et la gestion des festivals.<br></p>
-                                <p>➜  Ajout d'un festival : Chaque fois que vous ajoutez un nouveau festival, votre niveau de participation est mis à jour pour refléter votre contribution.<br></p>
-                                <p>➜ Modification d'un festival : Toute mise à jour d’un festival existant impacte également votre niveau de participation, en valorisant votre implication continue.<br></p>
-                                <p>💡 Plus vous êtes actif, plus votre niveau de participation augmente ! Cela permet de mesurer votre engagement et votre investissement dans la gestion des événements. 🎉</p>
+                                <p>⭐ Le niveau de participation évolue dynamiquement en fonction de votre engagement
+                                    dans l'organisation et la gestion des festivals.<br></p>
+                                <p>➜ Ajout d'un festival : Chaque fois que vous ajoutez un nouveau festival, votre
+                                    niveau de participation est mis à jour pour refléter votre contribution.<br></p>
+                                <p>➜ Modification d'un festival : Toute mise à jour d’un festival existant impacte
+                                    également votre niveau de participation, en valorisant votre implication
+                                    continue.<br></p>
+                                <p>💡 Plus vous êtes actif, plus votre niveau de participation augmente ! Cela permet de
+                                    mesurer votre engagement et votre investissement dans la gestion des événements. 🎉
+                                </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -196,16 +185,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                         <input type="email" name="email" class="form-control"
                             value="<?= htmlspecialchars($user['email']) ?>" required>
                     </div>
-
                     <div class="mb-3">
-                        <label>Photo de profil :</label><br>
-                        <?php if ($user['profile_picture']): ?>
-                        <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Photo de profil" width="100"
-                            class="mb-2"><br>
-                        <?php else: ?>
-                        <img src="../uploads/default_avatar.svg" alt="Avatar par défaut" width="100" class="mb-2"><br>
-                        <?php endif; ?>
-                        <input type="file" name="profile_picture" class="form-control">
+                        <label>URL de votre photo de profil :</label>
+                        <input type="text" name="profile_picture" class="form-control"
+                            value="<?= htmlspecialchars($user['profile_picture']) ?>">
                     </div>
 
 
@@ -217,6 +200,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     </div>
 
     <script src="../js/script.js"></script>
+
+
+    <?php
+    // Vérifier si un message de popup est stocké dans la session
+    if (isset($_SESSION['popup_message'])) {
+        $message = $_SESSION['popup_message'];
+        $status = $_SESSION['popup_status'] ? 'true' : 'false';
+
+        echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showPopup(" . ($status ? "true" : "false") . ");
+        });
+        </script>";
+
+
+        // Supprimer les variables de session pour éviter une réaffichage
+        unset($_SESSION['popup_message']);
+        unset($_SESSION['popup_status']);
+    }
+    ?>
+
+
+
 </body>
 
 </html>

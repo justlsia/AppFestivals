@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : "";
+$success = isset($_SESSION['success']) ? $_SESSION['success'] : "";
+unset($_SESSION['error'], $_SESSION['success']);
+
 require '../includes/config.php';
 require '../includes/functions.php';
 require '../includes/header.php';
@@ -71,6 +76,11 @@ if (!$user) {
                             } 
                     ?>
                 </p>
+                <!-- Mettre à jour l'utilisateur (sauf pour les connexion avec Google )-->
+                <?php if($user['google_id'] == Null) { ?>
+                    <p>(Compte Google non modifiable)</p>
+                <?php } ?>
+
             </div>
 
             <!-- Retour à l'acceuil (liste des festivals) -->

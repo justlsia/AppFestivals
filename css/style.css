@@ -146,3 +146,38 @@ ul {
     color: gold;
 }
 
+
+
+
+
+
+
+
+
+
+/* Styles pour la popup */
+.popup {
+    display: none; /* Cachée par défaut */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    width: 300px;
+    text-align: center;
+}
+
+.popup-content p {
+    font-size: 18px;
+}
+
+.popup-content button {
+    margin-top: 10px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+

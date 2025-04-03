@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
+
         // Ajouter un festival et récupérer son ID
         $festival_id = addFestival($name, $location, $date, $description, $image, $official_website);
 
