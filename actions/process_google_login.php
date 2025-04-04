@@ -40,6 +40,7 @@ if (isset($_POST['credential'])) {
         $username = $payload['name'];
         $name = $payload['name'];
         $firstname = $payload['name'];
+        $profile_picture = $payload['picture'];
 
         // Requête : Rechercher un utilisateur par son google_id ou son email
         $user = getUserByEmailOrGoogleId($email, $google_id);
@@ -60,7 +61,7 @@ if (isset($_POST['credential'])) {
             ];
         } else {
             // Créer un utilisateur Google
-            $newUserId = addUserByGoogleAuth($google_id, $email, $username, $name, $firstname);
+            $newUserId = addUserByGoogleAuth($google_id, $email, $username, $name, $firstname, $profile_picture);
         
             if ($newUserId) {
                 $_SESSION['user'] = [
@@ -68,7 +69,8 @@ if (isset($_POST['credential'])) {
                     "username" => $name,
                     "email" => $email,
                     "firstname" => $firstname,
-                    "name" => $name
+                    "name" => $name,
+                    "profile_picture" => $profile_picture
                 ];
             } else {
                 echo json_encode(["success" => false, "message" => "Erreur lors de l'enregistrement de l'utilisateur"]);

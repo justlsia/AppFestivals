@@ -557,7 +557,7 @@ function UpdateGoogleIdByEmail($google_id, $email) {
 /**
 * Ajouter un utilisateur google 
 */
-function addUserByGoogleAuth($google_id, $email, $username, $name, $firstname) {
+function addUserByGoogleAuth($google_id, $email, $username, $name, $firstname, $profile_picture) {
     global $pdo;
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -568,8 +568,8 @@ function addUserByGoogleAuth($google_id, $email, $username, $name, $firstname) {
         $password = bin2hex(random_bytes(8));  // Génère un mot de passe aléatoire de 16 caractères
 
         // Requête : Ajouter un nouveau token google à un utilisateur
-        $req = "INSERT INTO users (google_id, email, username, name, firstname, age, password) 
-        VALUES (:google_id, :email, :username, :name, :firstname, 0, :password)";
+        $req = "INSERT INTO users (google_id, email, username, name, firstname, age, password, profile_picture) 
+        VALUES (:google_id, :email, :username, :name, :firstname, 0, :password, :profile_picture)";
 
         $stmt = $pdo->prepare($req);
 
@@ -580,6 +580,7 @@ function addUserByGoogleAuth($google_id, $email, $username, $name, $firstname) {
         $stmt->bindParam(':name',$name, PDO::PARAM_STR);
         $stmt->bindParam(':firstname',$firstname, PDO::PARAM_STR);
         $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':profile_picture', $profile_picture, PDO::PARAM_STR);
         
         $stmt->execute();
         return $pdo->lastInsertId();
