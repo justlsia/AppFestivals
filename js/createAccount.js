@@ -1,9 +1,6 @@
 /*
 * Vérifier le mot de passe utilisateur à la création d'un compte
 */
-alert("Le script est exécuté !");
-console.log("Le script est exécuté !");
-
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -18,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Événement submit déclenché");
 
         const password = document.querySelector("input[name='password']").value;
-        alert("Mot de passe saisi :" + password);
         const confirmPassword = document.querySelector("input[name='confirmPassword']").value;
 
         // Vérifier si les mots de passe correspondent

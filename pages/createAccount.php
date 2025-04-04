@@ -74,7 +74,7 @@
     </div>
 
     <!-- Vérification des informations entrées -->
-    <!--<script src="../js/createAccount.js" defer></script>-->
+    <script src="../js/createAccount.js" defer></script>
 
 </body>
 

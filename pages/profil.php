@@ -101,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     <?php if ($user['profile_picture']): ?>
                     <img src="<?= $user['profile_picture'] ?>" alt="Photo de profil" width="100" class="mb-2">
                     <?php else: ?>
-                    <span>Pas de photo</span>
                     <img src="../uploads/default_avatar.svg" alt="Photo de profil" width="100" class="mb-2">
                     <?php endif; ?>
                 </p>
@@ -212,7 +211,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
             showPopup($status, $message);
         });
         </script>";
-
 
         // Supprimer les variables de session pour éviter une réaffichage
         unset($_SESSION['popup_message']);
