@@ -28,9 +28,7 @@
             <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
 
             <h2 class="mt-5">Créer un compte</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto eius reiciendis eligendi at
-                perferendis iusto. Necessitatibus itaque quae, nostrum mollitia, facilis tenetur sunt adipisci excepturi
-                officia debitis sint ipsa vel.</p>
+            <p>Rejoins la communauté : découvre les festivals du moment et aide à les faire briller en participant à leur gestion !</p>
 
             <!-- Formulaire : Création d'un nouvel utilisateur -->
             <form id="registerForm" method="post" action="../actions/add_user.php">

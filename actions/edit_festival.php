@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($id)) {
 
         echo "Modification du festival avec succès. ✅";
         $_SESSION['success'] = "Modification du festival avec succès.";
-        Sentry\captureMessage("✅ Edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username . " - name festival : " . $name ); // Log    
+        //Sentry\captureMessage("✅ Edit festival. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $_SESSION['user']['username'] . " - name festival : " . $name ); // Log    
         header("Location: ../pages/manage.php");
         exit();
     } else {

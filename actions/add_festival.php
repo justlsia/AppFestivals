@@ -6,7 +6,6 @@ error_reporting(E_ALL);
 
 session_start();
 
-
 require '../includes/config.php';
 require '../includes/functions.php';
 require '../includes/header.php';
@@ -25,7 +24,6 @@ if (!$user || empty($user['id'])) {
 }
 
 $user_id = $user['id'];
-
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

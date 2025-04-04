@@ -74,7 +74,7 @@ unset($_SESSION['error'], $_SESSION['success']);
             <a href="createAccount.php" class="btn btn-success">Créer un compte</a>
 
             <!-- Retour à l'acceuil (Liste des festivals) -->
-            <a href="festivals.php" class="btn btn-primary">Retour</a>
+            <a href="createAccount.php" class="btn btn-primary">Retour</a>
 
         </div>
 

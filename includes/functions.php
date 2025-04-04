@@ -191,8 +191,8 @@ function registerUser($name, $firstname, $username, $age, $email, $password) {
 
     // Insérer l'utilisateur dans la base de données
     $stmt = $pdo->prepare("INSERT INTO users 
-        (name, firstname, username, age, email, password) 
-        VALUES (?, ?, ?, ?, ?, ?)");
+        (name, firstname, username, age, email, password, participation_level) 
+        VALUES (?, ?, ?, ?, ?, ?, 0)");
 
     if ($stmt->execute([$name, $firstname, $username, $age, $email, $hashedPassword])) {
         return "Compte créé avec succès !";

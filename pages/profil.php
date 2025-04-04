@@ -151,8 +151,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
                     </div>
                 </div>
 
+                <!-- Modifier le profil (sauf pour les connexions avec Google) -->
+                <?php if ($user['google_id'] == null || $user['google_id'] == 0) { ?>
+                    <button class="btn btn-primary" onclick="toggleEdit()">Modifier</button>
+                <?php } else { ?>
+                    <p>(Compte Google non modifiable)</p>
+                <?php } ?>
 
-                <button class="btn btn-primary" onclick="toggleEdit()">Modifier</button>
             </div>
 
             <!-- Formulaire de modification caché par défaut -->
