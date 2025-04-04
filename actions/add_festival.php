@@ -41,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
 
-
         // Vérifier si le festival existe déja 
         if (checkFestivalExist($name, $location, $date) > 0) {
             $_SESSION['error'] = "Ce festival existe déjà ! ⚠️";
@@ -52,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Ajouter un festival et récupérer son ID
         $festival_id = addFestival($name, $location, $date, $description, $image, $official_website);
+
         
         if ($festival_id) {
             // Vérifier le niveau de participation de l'utilisateur

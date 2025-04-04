@@ -17,7 +17,7 @@ function checkFestivalExist($name, $location, $date) {
             FROM festivals 
             WHERE LOWER(name) = LOWER(:name) 
             OR LOWER(location) = LOWER(:location) 
-            OR date = ':date'";
+            OR date = :date";
 
         $stmt = $pdo->prepare($req);
         $stmt->bindParam(':name',$name, PDO::PARAM_STR);
