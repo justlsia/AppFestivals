@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     form.addEventListener("submit", function(event) {
-        console.log("Événement submit déclenché");
 
         const password = document.querySelector("input[name='password']").value;
         const confirmPassword = document.querySelector("input[name='confirmPassword']").value;

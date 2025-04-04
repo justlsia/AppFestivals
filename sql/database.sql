@@ -343,3 +343,6 @@ INSERT INTO users (username, password, name, firstname, age, email, profile_pict
 ('tcheng',   '$2y$10$QO2PiCW9oQxqUcbQ.YrKmuAY6v5hceGGdnkW2dcDE9pBHoOxSe5iq', 'Cheng',  'Tom',    31, 'tcheng@example.com',   '../uploads/default_avatar.svg', 0, 0),
 ('lmartin',  '$2y$10$KbNzKHHxLJ0I7gOqB5F0leQzE/zOPCBMJ4A0fbWyNFbbEHyH5KhfO', 'Martin', 'Lucie',  29, 'lmartin@example.com',  '../uploads/default_avatar.svg', 0, 0),
 ('brichard', '$2y$10$FMU3MxslsHXuU7mfXW6jVONP5r5BdIP7z5gGb8fBZ5d.yoqQ8iz2e', 'Richard','Bruno',  38, 'brichard@example.com', '../uploads/default_avatar.svg', 0, 0);
+
+
+--Mot de passe ok : Festiv@l2024
