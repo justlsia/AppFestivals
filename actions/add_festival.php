@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 
@@ -32,7 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $_POST['date'];
     $description = $_POST['description'];
     $official_website = $_POST['official_website'];
-    $image = $_POST['image'];   
+    //$image = $_POST['image'];   
+    $image = empty($_POST['image']) ? Null : $_POST['image'];
 
     try {
 
@@ -47,14 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Ajouter un festival et récupérer son ID
         $festival_id = addFestival($name, $location, $date, $description, $image, $official_website);
-
+        
         if ($festival_id) {
             // Vérifier le niveau de participation de l'utilisateur
             $totalPoints = getParticipationUserById($user_id);
 
             if ($totalPoints < 5) {
                 // Ajouter un point
-                $sucess = addParticipationLevel($user_id, $festival_id); 
+                $success = addParticipationLevel($user_id, $festival_id); 
                 if ($success) {
                     echo "✅ Participation ajoutée avec succès !";
                 } else {
@@ -75,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (PDOException $e) {
         error_log("Erreur dans le processus d'ajout : " . $e->getMessage());
         $_SESSION['error'] = "Une erreur est survenue. ❌";
-        header("Location: ../pages/manage.php");
+        //header("Location: ../pages/manage.php");
     }
 
 }

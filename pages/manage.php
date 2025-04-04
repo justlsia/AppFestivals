@@ -61,18 +61,6 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
     <div class="container">
         <div class="card-container">
 
-
-        <!-- Popup d'informations -->
-    <div id="popupContainer" class="popup" style="display: none;">
-                <div class="popup-content">
-                    <p id="popupMessage"></p>
-                    <button id="closePopupBtn" onclick="closePop()" class="btn btn-primary">OK</button>
-                </div>
-            </div>
-        <div class="card-container">
-
-            <script src="../js/popup.js"></script>
-
             <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>
             
             <h2 class="mt-5">🎛 Gestion des Festivals : Ajout, Modification et Suppression</h2>

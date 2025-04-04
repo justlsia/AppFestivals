@@ -321,3 +321,25 @@ ALTER TABLE participations MODIFY user_id INT NOT NULL;
 ALTER TABLE participations MODIFY festival_id INT NOT NULL;
 
 ALTER TABLE users MODIFY profile_picture VARCHAR(900);
+
+
+
+-- Jeux de données utilisateurs (sans mot de passe haché)
+INSERT INTO users (username, password, name, firstname, age, email, profile_picture, participation_level, administrateur) VALUES
+('jdoe', SHA2('password123', 256), 'Doe', 'John', 28, 'jdoe@example.com', '../uploads/default_avatar.svg', 0, 1),
+('asmith', SHA2('azerty', 256), 'Smith', 'Alice', 34, 'asmith@example.com', '../uploads/default_avatar.svg', 0, 0),
+('mdupont', SHA2('motdepasse', 256), 'Dupont', 'Marc', 45, 'mdupont@example.com', '../uploads/default_avatar.svg', 0, 0),
+('celinep', SHA2('monmot123', 256), 'Petit', 'Céline', 22, 'celinep@example.com', '../uploads/default_avatar.svg', 0, 0),
+('tcheng', SHA2('adminpass', 256), 'Cheng', 'Tom', 31, 'tcheng@example.com', '../uploads/default_avatar.svg', 0, 0),
+('lmartin', SHA2('paul1234', 256), 'Martin', 'Lucie', 29, 'lmartin@example.com', '../uploads/default_avatar.svg', 0, 0),
+('brichard', SHA2('banana42', 256), 'Richard', 'Bruno', 38, 'brichard@example.com', '../uploads/default_avatar.svg', 0, 0);
+
+-- avec mot de passe haché
+INSERT INTO users (username, password, name, firstname, age, email, profile_picture, participation_level, administrateur) VALUES
+('jdoe',     '$2y$10$eG16OBEis0mPC6FE1FEijeRRM20y3RQsyfdJkoKEjVCHzQME1nDum', 'Doe',    'John',   28, 'jdoe@example.com',     '../uploads/default_avatar.svg', 0, 1),
+('asmith',   '$2y$10$YiV0Gk/1xVxVNTjc4bnBqu58Vq0YOoAuwsfsN7ov9OPp3l7n9cJpy', 'Smith',  'Alice',  34, 'asmith@example.com',   '../uploads/default_avatar.svg', 0, 0),
+('mdupont',  '$2y$10$P9kZp0c5WrWyExWNEqQ6ceZkh8OiOE6E0fPg8x0jOJNjMtuZphgyK', 'Dupont', 'Marc',   45, 'mdupont@example.com',  '../uploads/default_avatar.svg', 0, 0),
+('celinep',  '$2y$10$P9UcrI3lCakLqssShw7uxuH.PO9vBCxt9OHJ5i/GBXnOdEKetpZQO', 'Petit',  'Céline', 22, 'celinep@example.com',  '../uploads/default_avatar.svg', 0, 1),
+('tcheng',   '$2y$10$QO2PiCW9oQxqUcbQ.YrKmuAY6v5hceGGdnkW2dcDE9pBHoOxSe5iq', 'Cheng',  'Tom',    31, 'tcheng@example.com',   '../uploads/default_avatar.svg', 0, 0),
+('lmartin',  '$2y$10$KbNzKHHxLJ0I7gOqB5F0leQzE/zOPCBMJ4A0fbWyNFbbEHyH5KhfO', 'Martin', 'Lucie',  29, 'lmartin@example.com',  '../uploads/default_avatar.svg', 0, 0),
+('brichard', '$2y$10$FMU3MxslsHXuU7mfXW6jVONP5r5BdIP7z5gGb8fBZ5d.yoqQ8iz2e', 'Richard','Bruno',  38, 'brichard@example.com', '../uploads/default_avatar.svg', 0, 0);
