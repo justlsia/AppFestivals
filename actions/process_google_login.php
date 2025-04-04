@@ -50,7 +50,7 @@ if (isset($_POST['credential'])) {
                 UpdateGoogleIdByEmail($google_id, $email);
             }
         
-            // 🟢 Stocke correctement les infos utilisateur en session
+            // Stocke correctement les infos utilisateur en session
             $_SESSION['user'] = [
                 "id" => $user['id'],
                 "username" => $user['username'],
@@ -60,19 +60,20 @@ if (isset($_POST['credential'])) {
             ];
         } else {
             // Créer un utilisateur Google
-            addUserByGoogleAuth($google_id, $email, $username, $name, $firstname);
+            $newUserId = addUserByGoogleAuth($google_id, $email, $username, $name, $firstname);
         
-            // 🔄 Récupérer le nouvel ID
-            $newUserId = $pdo->lastInsertId();
-        
-            // Stocke correctement les infos en session
-            $_SESSION['user'] = [
-                "id" => $newUserId,
-                "username" => $name,
-                "email" => $email,
-                "firstname" => $firstname,
-                "name" => $name
-            ];
+            if ($newUserId) {
+                $_SESSION['user'] = [
+                    "id" => $newUserId,
+                    "username" => $name,
+                    "email" => $email,
+                    "firstname" => $firstname,
+                    "name" => $name
+                ];
+            } else {
+                echo json_encode(["success" => false, "message" => "Erreur lors de l'enregistrement de l'utilisateur"]);
+                exit;
+            }
         }
         
         // Retourne la réponse JSON

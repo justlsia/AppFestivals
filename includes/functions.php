@@ -559,10 +559,17 @@ function UpdateGoogleIdByEmail($google_id, $email) {
 */
 function addUserByGoogleAuth($google_id, $email, $username, $name, $firstname) {
     global $pdo;
+
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     try {
+
+        // Mot de passe générique 
+        $password = bin2hex(random_bytes(8));  // Génère un mot de passe aléatoire de 16 caractères
+
         // Requête : Ajouter un nouveau token google à un utilisateur
-        $req = "INSERT INTO users (google_id, email, username, name, firstname, age) 
-        VALUES (:google_id, :email, :username, :name, :firstname, 0)";
+        $req = "INSERT INTO users (google_id, email, username, name, firstname, age, password) 
+        VALUES (:google_id, :email, :username, :name, :firstname, 0, :password)";
 
         $stmt = $pdo->prepare($req);
 
@@ -572,8 +579,11 @@ function addUserByGoogleAuth($google_id, $email, $username, $name, $firstname) {
         $stmt->bindParam(':username',$username, PDO::PARAM_STR);
         $stmt->bindParam(':name',$name, PDO::PARAM_STR);
         $stmt->bindParam(':firstname',$firstname, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
         
-        return $stmt->execute();
+        $stmt->execute();
+        return $pdo->lastInsertId();
+
     } catch (PDOException $e) {
         error_log("Erreur lors de l'ajout d'un utilisateur avec Google ' : " . $e->getMessage());
         return [];
