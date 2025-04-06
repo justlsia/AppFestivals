@@ -72,7 +72,18 @@ $totalPages = ceil($totalFestivals / $festivalsParPage);
                     <tr onclick="window.location='detail.php?id=<?= $festival['id'] ?>';" style="cursor: pointer;">
                         <td><?= htmlspecialchars($festival['name']) ?></td>
                         <td><?= htmlspecialchars($festival['location']) ?></td>
-                        <td><?= htmlspecialchars($festival['date']) ?></td>
+
+                        <td>
+                        <?php if ($festival['date']) {
+                                // Créer un objet DateTime à partir de 'date' et formater la date
+                                $dateFestival = new DateTime($festival['date']);
+                                echo htmlspecialchars($dateFestival->format('j/m/Y'));
+                            } else {
+                                echo '/';
+                            }
+                            ?>
+                        </td>
+
                         <td><?= htmlspecialchars($festival['description']) ?></td>
                     </tr>
                     <?php endforeach; ?>

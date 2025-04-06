@@ -56,7 +56,18 @@ if (!$festival) {
 
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><strong>Lieu :</strong> <?= htmlspecialchars($festival['location']) ?></li>
-                <li class="list-group-item"><strong>Date :</strong> <?= htmlspecialchars($festival['date']) ?></li>
+
+                <li class="list-group-item"><strong>Date :</strong>
+                    <?php if ($festival['date']) {
+                        // Créer un objet DateTime à partir de 'date' et formater la date
+                        $dateFestival = new DateTime($festival['date']);
+                        echo htmlspecialchars($dateFestival->format('j/m/Y'));
+                    } else {
+                        echo '/';
+                    }
+                    ?>
+                </li>
+
             </ul>
 
             <div class="card-body text-center">
