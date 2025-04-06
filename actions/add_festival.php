@@ -41,11 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Vérifier si le festival existe déja 
         if (checkFestivalExist($name, $location, $date) > 0) {
-            $_SESSION['error'] = "Ce festival existe déjà ! ⚠️";
-            header("Location: ../pages/manage.php");
+            $_SESSION['popup_message'] = "Festival déjà existant.";
+            $_SESSION['popup_status'] = false; 
+
+            header("Location: ../actions/add_festival.php");
             exit();
         }
-
 
         // Ajouter un festival et récupérer son ID
         $festival_id = addFestival($name, $location, $date, $description, $image, $official_website);
@@ -100,10 +101,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
+
+
 </head>
 
 <body>
     <div class="container">
+
+        <!-- Popup d'informations -->
+        <div id="popupContainer" class="popup" style="display: none;">
+            <div class="popup-content">
+                <p id="popupMessage"></p>
+                <button id="closePopupBtn" onclick="closePop()" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+
+        <script src="../js/popup.js"></script>
+
+
         <div class="card-container">
             <h2 class="mt-5">Ajouter un Festival</h2>
             <form method="post">
@@ -140,6 +155,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
         </div>
     </div>
+
+    <?php
+    // Vérifier si un message de popup est stocké dans la session
+    if (isset($_SESSION['popup_message'])) {
+        $message = json_encode($_SESSION['popup_message']);
+        $status = $_SESSION['popup_status'] ? 'true' : 'false';
+
+        echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showPopup($status, $message);
+        });
+        </script>";
+
+        // Supprimer les variables de session pour éviter une réaffichage
+        unset($_SESSION['popup_message']);
+        unset($_SESSION['popup_status']);
+    }
+    ?>
+
 </body>
 
 </html>
