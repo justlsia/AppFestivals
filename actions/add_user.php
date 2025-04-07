@@ -1,5 +1,7 @@
 <?php
+
 session_start();
+
 require_once "../includes/functions.php"; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,4 +47,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     exit;
 }
+
 ?>

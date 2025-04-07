@@ -23,8 +23,12 @@ try {
             Sentry\captureMessage("✅ Session start. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username);
             header("Location: ../pages/festivals.php");
             exit;
-        } 
-    }
+            } 
+        } else {
+            $_SESSION['error'] = "Identifiant ou mot de passe incorrect !";
+            header("Location: ../pages/login.php");
+            exit;
+        }
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
     Sentry\captureMessage("❌ Session error. Date/Time : " . date("F j, Y, g:i a") . " - username : " . $username);

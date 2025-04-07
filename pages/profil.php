@@ -29,18 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
     $firstname = trim($_POST["firstname"]);
     $age = trim($_POST["age"]);
     $email = trim($_POST["email"]);
-    $profile_picture = $user['profile_picture']; 
+    $profile_picture = trim($_POST['profile_picture']); 
     $administrateur = $user['administrateur'];
     //$participation_level = $user['participation_level'];
 
 
     if (updateUserProfile($user_id, $username, $name, $firstname, $age, $email, $profile_picture, $administrateur)) {
-        //$_SESSION['success'] = "Profil mis à jour avec succès.";
         $_SESSION['popup_message'] = "Profil mis à jour avec succès.";
         $_SESSION['popup_status'] = true; 
         
     } else {
-        //$_SESSION['error'] = "Erreur lors de la mise à jour du profil.";
         $_SESSION['popup_message'] = "Erreur lors de la mise à jour du profil.";
         $_SESSION['popup_status'] = false; 
     }

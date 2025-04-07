@@ -52,7 +52,7 @@ $totalPages = ceil($totalUsers / $usersParPage);
 <body>
 
     <!-- Container principale -->
-    <div class="container mt-5">
+    <div class="container">
         <div class="card-container">
 
             <?php if (isset($success) || isset($error)) echo "<p class='text-danger'>" . ($success ?? $error) . "</p>"; ?>

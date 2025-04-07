@@ -19,11 +19,12 @@ if (empty($_SESSION['user']['username'])) {
 // Récupération de l'utilisateur
 $user = getUserByUsername($_SESSION['user']['username']);
 
+$user_id = $user['id'];
+
 if (!$user || empty($user['id'])) {
     die("Erreur : Utilisateur introuvable ou ID non valide. ❌");
 }
 
-$user_id = $user['id'];
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -33,12 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $location = $_POST['location'];
     $date = $_POST['date'];
     $description = $_POST['description'];
-    $official_website = $_POST['official_website'];
-    //$image = $_POST['image'];   
+    $official_website = $_POST['official_website']; 
     $image = empty($_POST['image']) ? Null : $_POST['image'];
 
     try {
-
+        
         // Vérifier si le festival existe déja 
         if (checkFestivalExist($name, $location, $date) > 0) {
             $_SESSION['popup_message'] = "Festival déjà existant.";
