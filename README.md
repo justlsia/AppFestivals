@@ -37,7 +37,7 @@ Les administrateurs disposent de privilèges supplémentaires, notamment la gest
 - Serveur local (Apache, XAMPP, MAMP, etc.)
 - Base de données MariaDB
 
-### 📦 Étapes d'installation
+### Étapes d'installation
 
 ```bash
 # 1. Cloner le dépôt
@@ -70,7 +70,4 @@ Ces images illustrent les principales pages de l'application :
 
 - Page de gestion des utilisateurs (admin)
 
----
 
-# Auteur
-Développé par Lili dans le cadre d’un projet scolaire.
