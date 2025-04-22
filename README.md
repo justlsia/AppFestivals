@@ -51,7 +51,7 @@ git clone https://github.com/votre-utilisateur/festivals-app.git
 # Copier le fichier d'exemple et adapter selon votre environnement
 cp .env.exemple .env
 
-# Modifier les valeurs dans .env : identifiants DB, clés OAuth, etc.
+# Modifier les valeurs dans .env : identifiants DB, clés OAuth, Sentry.
 
 ```
 ---
