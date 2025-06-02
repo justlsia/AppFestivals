@@ -308,3 +308,17 @@ CREATE TABLE participations (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (festival_id) REFERENCES festivals(id) ON DELETE CASCADE
 );
+
+-- A FAIRE 
+ALTER TABLE festivals ADD COLUMN latlong VARCHAR(50) NULL;
+
+CREATE TABLE infofestival (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    festival_id INT NOT NULL,
+    user_id INT NOT NULL,
+    note INT NOT NULL CHECK (note BETWEEN 1 AND 5),
+    commentaire TEXT,
+    date_posted DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (festival_id) REFERENCES festivals(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
