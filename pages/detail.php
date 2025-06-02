@@ -66,6 +66,11 @@ if (!$festival) {
                 <a href="festivals.php" class="btn btn-primary">Retour</a>
             </div>
 
+            <!-- Bouton pour voir les commentaires -->
+            <div class="card-body text-center">
+                <a href="commentaire.php?id=<?= $festival['id'] ?>" class="btn btn-outline-secondary">Commentaires</a>
+            </div>
+
         </div>
     </div>
 
