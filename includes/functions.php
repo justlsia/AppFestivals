@@ -137,6 +137,50 @@ function searchFestivalByName($query) {
 }
 
 
+/**
+ * Chercher un festival selon plusieurs paramètres
+ */
+function advencedSearchFestival($name,$date,$location,$note) {
+    global $pdo;
+
+    try {
+        $conditions = [];
+        $params = [];
+        // Requête : Rechercher un festival
+        $req = "SELECT * FROM festivals ";
+
+        if (!empty($name)) {
+            $conditions[] = "festivals.name LIKE :name";
+            $params[':name'] = "%$name%";
+        }
+        if (!empty($date)) {
+            $conditions[] = "festivals.date LIKE :date";
+            $params[':date'] = "%$date%";
+        }
+        if (!empty($location)) {
+            $conditions[] = "festivals.location LIKE :location";
+            $params[':location'] = "%$location%";
+        }
+        if (!empty($note)) {
+            $conditions[] = "festivals.note LIKE :note";
+            $params[':note'] = "%$note%";
+        }
+
+        // Si des conditions existent, on les ajoute à la requête avec WHERE
+        if (count($conditions) > 0) {
+            $req .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $stmt = $pdo->prepare($req);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Erreur lors de la recherche du festival' : " . $e->getMessage());
+        return [];
+    } 
+}
+
 
 // ----- USERS -----
 
