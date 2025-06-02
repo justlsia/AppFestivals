@@ -144,3 +144,10 @@ ul {
     color: gold;
 }
 
+/* 
+* Carte interactive
+*/
+#map {
+    height: 600px;
+    width: 100%;
+}
