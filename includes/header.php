@@ -51,6 +51,19 @@ if (session_status() === PHP_SESSION_NONE) {
                     </li>
                     <?php endif; ?>
 
+                    <!-- Fonctionnalités de recherche avancée si l'utilisateur est connecté(e) -->
+                    <?php if (isset($_SESSION['user'])): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Accès
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../pages/advancedSearch.php">Recherche avancée</a></li>
+                            <li><a class="dropdown-item" href="../pages/map.php">Carte interactive</a></li>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
                     <!-- Connexion / Déconnexion -->
                     <?php if (isset($_SESSION['user'])): ?>
                     <li class="nav-item">
