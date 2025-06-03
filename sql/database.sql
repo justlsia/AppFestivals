@@ -322,3 +322,16 @@ CREATE TABLE infofestival (
     FOREIGN KEY (festival_id) REFERENCES festivals(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+
+-- FAVORIS
+-- Modifications potentielle pour système de favoris
+CREATE TABLE favoris (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    festival_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (festival_id) REFERENCES festivals(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_favoris (user_id, festival_id)
+);
+
